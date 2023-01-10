@@ -1,0 +1,56 @@
+/* -----------------
+/* General CSS Reset */
+/*-------------------*/
+:root {
+	--shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* -------------------------- */
+/* Making basic style resets */
+/* ------------------------- */
+html {
+	font-size: 62.5%;
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 70%;
+	}
+}
+
+html,
+body {
+	scroll-behavior: smooth;
+}
+
+input,
+select,
+textarea,
+button {
+	font-family: inherit;
+}
+
+li {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+button {
+	cursor: pointer;
+	line-height: inherit;
+	border: none;
+	outline: none;
+}
+
+body {
+	font-size: 1.6rem;
+}
