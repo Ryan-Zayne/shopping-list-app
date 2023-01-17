@@ -1,18 +1,22 @@
 import {
 	Box,
-	Heading,
-	FormControl,
-	Input,
 	Button,
-	useDisclosure,
+	FormControl,
+	Heading,
+	Input,
+	InputGroup,
+	InputLeftElement,
 	Modal,
-	ModalOverlay,
-	ModalContent,
-	ModalHeader,
-	ModalFooter,
 	ModalBody,
-	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+	useDisclosure,
 } from '@chakra-ui/react';
+import { BiDollar } from 'react-icons/bi';
+import { TbShoppingCart } from 'react-icons/tb';
+import { ImCart } from 'react-icons/im';
 
 function UserInput({
 	todoList,
@@ -21,11 +25,32 @@ function UserInput({
 	setTodoList,
 	setTodoPrice,
 	setTodoProduct,
+	setCheckedState,
 	isEdit,
 	setIsEdit,
-	currentID,
+	editID,
 }) {
 	const { onOpen, isOpen, onClose } = useDisclosure();
+	const modal = (
+		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
+			<ModalOverlay />
+			<ModalContent maxWidth={'33.8rem'}>
+				<ModalHeader fontWeight={'bold'} fontSize={{ base: '1.5rem', md: '1.4rem' }}>
+					Product name less than three characters!😐
+				</ModalHeader>
+
+				<ModalBody fontSize={'1.4rem'}>
+					Shey you dey whyne me ni?! &nbsp; Enter a reasonable product name there osiso!😒
+				</ModalBody>
+
+				<ModalFooter>
+					<Button colorScheme='red' mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
+						Close
+					</Button>
+				</ModalFooter>
+			</ModalContent>
+		</Modal>
+	);
 
 	const productChangeHandler = (event) => {
 		const productInput = event.target;
@@ -44,9 +69,10 @@ function UserInput({
 				...oldList,
 				{
 					product: todoProduct,
-					price: todoPrice,
+					price: Number(todoPrice),
 				},
 			]);
+			setCheckedState((oldArr) => [...oldArr, false]);
 			setTodoProduct('');
 			setTodoPrice('');
 		} else {
@@ -54,34 +80,12 @@ function UserInput({
 		}
 	};
 
-	const modal = (
-		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
-			<ModalOverlay />
-			<ModalContent maxWidth={'29.6rem'}>
-				<ModalHeader fontWeight={'bold'}>
-					Product name less than three characters!😐
-				</ModalHeader>
-				<ModalCloseButton />
-				<ModalBody>
-					Shey you dey whyne me ni? Enter a reasonable product name osiso!😒
-				</ModalBody>
-
-				<ModalFooter>
-					<Button colorScheme='red' mr={3} onClick={onClose} fontSize={'1.2rem'}>
-						Close
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
-	);
-
 	const updateHandler = (event) => {
 		event.preventDefault();
 		const updatedList = todoList.map((item) => {
-			if (todoList.indexOf(item) === currentID) {
+			if (todoList.indexOf(item) === editID) {
 				return { ...item, product: todoProduct, price: todoPrice };
 			}
-
 			return item;
 		});
 
@@ -104,32 +108,55 @@ function UserInput({
 				boxShadow={'var(--shadow)'}
 				onSubmit={isEdit ? updateHandler : addTodoHandler}
 			>
-				<Heading fontSize={'2.7rem'} color={'blue.600'} mt={'2.5rem'}>
+				<Heading
+					fontSize={'2.7rem'}
+					color={'blue.600'}
+					mt={'2.5rem'}
+					display={'flex'}
+					alignItems={'center'}
+					gap={'1rem'}
+				>
 					Shopping List
+					<ImCart />
 				</Heading>
-
-				<Input
-					value={todoProduct}
-					onChange={productChangeHandler}
-					type='text'
-					placeholder={'What do you want to buy?'}
-					_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
-					paddingBlock={'2.2rem'}
-					boxShadow={'var(--shadow)'}
-					fontSize={'1.4rem'}
-				/>
-
-				<Input
-					value={todoPrice}
-					onChange={priceChangeHandler}
-					type='number'
-					paddingBlock={'2.2rem'}
-					boxShadow={'var(--shadow)'}
-					placeholder='Enter price'
-					_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
-					fontSize={'1.4rem'}
-					fontWeight={'bold'}
-				/>
+				<InputGroup>
+					<InputLeftElement
+						color={'gray.700'}
+						pointerEvents='none'
+						fontSize='1.2em'
+						height={'100%'}
+						width={'2.8rem'}
+					>
+						<TbShoppingCart />
+					</InputLeftElement>
+					<Input
+						value={todoProduct}
+						onChange={productChangeHandler}
+						type='text'
+						placeholder={'What do you want to buy?'}
+						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
+						paddingBlock={'2.2rem'}
+						pl={'2.8rem'}
+						boxShadow={'var(--shadow)'}
+						fontSize={'1.4rem'}
+					/>
+				</InputGroup>
+				<InputGroup>
+					<InputLeftElement pointerEvents='none' fontSize='1.2em' height={'100%'} color={'gray.700'}>
+						<BiDollar />
+					</InputLeftElement>
+					<Input
+						value={todoPrice}
+						onChange={priceChangeHandler}
+						type='number'
+						paddingBlock={'2.2rem'}
+						boxShadow={'var(--shadow)'}
+						placeholder='Enter price'
+						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
+						fontSize={'1.4rem'}
+						fontWeight={'bold'}
+					/>
+				</InputGroup>
 
 				<Button
 					colorScheme={'blue'}

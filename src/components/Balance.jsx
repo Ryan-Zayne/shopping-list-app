@@ -1,6 +1,18 @@
 import { Flex, Text } from '@chakra-ui/react';
 
-function Balance() {
+function Balance({ todoList, checkedID }) {
+	const handleTotal = () => {
+		const totalCalc = todoList.reduce((accumulator, todo) => accumulator + todo.price, 0);
+		return totalCalc;
+	};
+
+	const handleSpent = () => {
+		const spentCalc = todoList
+			.filter((item, index) => checkedID.includes(index))
+			.reduce((accumulator, todo) => accumulator + todo.price, 0);
+		return spentCalc;
+	};
+
 	return (
 		<Flex
 			direction={'row'}
@@ -11,9 +23,9 @@ function Balance() {
 			color={'white'}
 			borderRadius={'8px'}
 		>
-			<Text>Total: ${}</Text>
-			<Text>Spent: ${}</Text>
-			<Text>Bal: ${}</Text>
+			<Text>Total: ${handleTotal()}</Text>
+			<Text>Spent: ${handleSpent()}</Text>
+			<Text>Bal: ${handleTotal() - handleSpent()}</Text>
 		</Flex>
 	);
 }

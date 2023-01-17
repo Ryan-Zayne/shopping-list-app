@@ -7,11 +7,15 @@ function RenderedList({
 	setTodoPrice,
 	todoList,
 	setTodoList,
-	setCurrentID,
+	setEditID,
+	setCheckedState,
+	checkedState,
+	setCheckedID,
+	checkedID,
 }) {
 	const editHandler = (id) => {
 		setIsEdit(true);
-		setCurrentID(id);
+		setEditID(id);
 		setTodoProduct(todoList[id].product);
 		setTodoPrice(todoList[id].price);
 	};
@@ -21,9 +25,21 @@ function RenderedList({
 		setTodoList(newTodoList);
 	};
 
+	const checkedStateHandler = (id) => {
+		const updatedCheckState = checkedState.map((item, index) => (index === id ? !item : item));
+		setCheckedState(updatedCheckState);
+	};
+
+	const CheckedIDHandler = (id) => {
+		setCheckedID((prevIDs) =>
+			checkedID.includes(id) ? checkedID.filter((i) => i !== id) : [...prevIDs, id]
+		);
+	};
+
 	const Listitems = todoList.map((item, index) => {
 		return (
 			<Flex
+				// eslint-disable-next-line react/no-array-index-key
 				key={index}
 				as={'li'}
 				justify={'space-between'}
@@ -31,11 +47,28 @@ function RenderedList({
 				borderBottom={'2px solid blue'}
 			>
 				<Box textTransform={'capitalize'}>
-					<chakra.input type='checkbox' mr={'clamp(1.2rem, 2.8vw, 5rem)'} />
-					{item.product}
+					<chakra.input
+						type='checkbox'
+						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
+						checked={checkedState[index]}
+						value={item.product}
+						id={`checkbox${index}`}
+						onChange={() => {
+							checkedStateHandler(index);
+							CheckedIDHandler(index);
+						}}
+					/>
+					<chakra.label
+						textDecoration={checkedState[index] && 'line-through'}
+						htmlFor={`checkbox${index}`}
+					>
+						{item.product}
+					</chakra.label>
 				</Box>
 				<Stack direction={'row'} spacing={'1rem'}>
-					<chakra.span fontStyle={'italic'}>${item.price}</chakra.span>
+					<chakra.span fontStyle={'italic'} textDecoration={checkedState[index] && 'line-through'}>
+						${item.price}
+					</chakra.span>
 					<IconButton
 						onClick={() => editHandler(index)}
 						className='edit-button'
@@ -59,7 +92,7 @@ function RenderedList({
 	});
 
 	return (
-		<Box as={'ul'} minH={'27rem'}>
+		<Box as={'ul'} minH={'21rem'}>
 			{Listitems}
 		</Box>
 	);
