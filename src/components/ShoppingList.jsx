@@ -34,12 +34,12 @@ function ShoppingList() {
 				bgColor={'rgb(17, 24, 40)'}
 				w={'100%'}
 				paddingBlock={{ base: '0 2rem', md: '1.5rem 3.5rem' }}
-				transform={'translateY(-1px)'}
+				mt={{ md: '-1px' }}
 			>
 				<Heading as={'h1'} fontSize={'3rem'} color={'hsl(0, 0%, 100%, 0.3)'}>
 					Welcome!
 				</Heading>
-				<Text color={'hsl(0, 0%, 100%, 0.4)'}>This is Chakra-ui in action</Text>
+				<Text color={'hsl(0, 0%, 100%, 0.4)'}>You are now watching Chakra-UI in action </Text>
 			</Box>
 
 			<Flex
