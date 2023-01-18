@@ -72,8 +72,9 @@ function RenderedList({
 				justify={'space-between'}
 				p={'1rem'}
 				borderBottom={'2px solid blue'}
+				gap={'1rem'}
 			>
-				<Box textTransform={'capitalize'}>
+				<Stack direction={'row'} textTransform={'capitalize'}>
 					<chakra.input
 						type='checkbox'
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
@@ -91,8 +92,9 @@ function RenderedList({
 					>
 						{item.product}
 					</chakra.label>
-				</Box>
-				<Stack direction={'row'} spacing={'1rem'}>
+				</Stack>
+
+				<Stack direction={'row'} spacing={'1rem'} alignItems={'center'}>
 					<chakra.span fontStyle={'italic'} textDecoration={checkedState[index] && 'line-through'}>
 						${item.price}
 					</chakra.span>

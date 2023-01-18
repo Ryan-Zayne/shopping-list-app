@@ -22,10 +22,11 @@ function Balance({ todoList, checkedID }) {
 			bgColor={'blue.600'}
 			color={'white'}
 			borderRadius={'8px'}
+			gap={'1.5rem'}
 		>
-			<Text>Total: ${handleTotal()}</Text>
-			<Text>Spent: ${handleSpent()}</Text>
-			<Text>Bal: ${handleTotal() - handleSpent()}</Text>
+			<Text textAlign={'center'}>Total: ${handleTotal()}</Text>
+			<Text textAlign={'center'}>Spent: ${handleSpent()}</Text>
+			<Text textAlign={'center'}>Bal: ${handleTotal() - handleSpent()}</Text>
 		</Flex>
 	);
 }

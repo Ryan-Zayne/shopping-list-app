@@ -66,7 +66,7 @@ function ShoppingList() {
 
 				<Stack
 					spacing={'6rem'}
-					w={'max(100%, 29rem)'}
+					w={'100%'}
 					mt={{ base: '7rem', md: '4rem' }}
 					p={{ base: '0 1.6rem', md: '1.6rem' }}
 					borderTop={'solid 2.5px #0f43df'}
