@@ -94,7 +94,7 @@ function RenderedList({
 					</chakra.label>
 				</Stack>
 
-				<Stack direction={'row'} spacing={'1rem'} alignItems={'center'}>
+				<Stack direction={'row'} spacing={'1.2rem'} alignItems={'center'}>
 					<chakra.span fontStyle={'italic'} textDecoration={checkedState[index] && 'line-through'}>
 						${item.price}
 					</chakra.span>

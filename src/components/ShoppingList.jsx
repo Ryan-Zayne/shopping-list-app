@@ -26,7 +26,7 @@ function ShoppingList() {
 			maxW={{ base: '65rem', md: 'unset', lg: '115rem' }}
 			direction={'column'}
 			border={'solid 2rem rgb(17, 24, 40)'}
-			borderRadius={'2rem'}
+			borderRadius={'1.4rem'}
 			margin={{ base: '3rem auto', md: '4.3rem auto 2rem' }}
 		>
 			<Box
