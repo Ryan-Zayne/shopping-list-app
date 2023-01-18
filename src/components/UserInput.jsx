@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { BiDollar } from 'react-icons/bi';
 import { TbShoppingCart } from 'react-icons/tb';
-import { ImCart } from 'react-icons/im';
+import { BsCart4 } from 'react-icons/bs';
 
 function UserInput({
 	todoList,
@@ -120,7 +120,7 @@ function UserInput({
 					gap={'1rem'}
 				>
 					Shopping List
-					<ImCart />
+					<BsCart4 />
 				</Heading>
 				<InputGroup>
 					<InputLeftElement
