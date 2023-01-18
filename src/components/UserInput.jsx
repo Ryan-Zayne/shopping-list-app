@@ -87,7 +87,7 @@ function UserInput({
 		event.preventDefault();
 		const updatedList = todoList.map((item) => {
 			if (todoList.indexOf(item) === editID) {
-				return { ...item, product: todoProduct, price: todoPrice };
+				return { ...item, product: todoProduct, price: Number(todoPrice) };
 			}
 			return item;
 		});
