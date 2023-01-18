@@ -1,7 +1,24 @@
-import { Box, Flex, Stack, chakra, IconButton } from '@chakra-ui/react';
+import {
+	Box,
+	Flex,
+	Stack,
+	chakra,
+	IconButton,
+	Button,
+	useDisclosure,
+	AlertDialog,
+	AlertDialogBody,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogContent,
+	AlertDialogOverlay,
+} from '@chakra-ui/react';
+import { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
 
 function RenderedList({
+	setIsDelete,
+	isDelete,
 	setIsEdit,
 	setTodoProduct,
 	setTodoPrice,
@@ -13,6 +30,9 @@ function RenderedList({
 	setCheckedID,
 	checkedID,
 }) {
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const cancelRef = useRef();
+
 	const editHandler = (id) => {
 		setIsEdit(true);
 		setEditID(id);
@@ -20,9 +40,16 @@ function RenderedList({
 		setTodoPrice(todoList[id].price);
 	};
 
-	const deleteHandler = (id) => {
-		const newTodoList = todoList.filter((objectItem) => todoList.indexOf(objectItem) !== id);
-		setTodoList(newTodoList);
+	const deleteStateHandler = () => {
+		setIsDelete(true);
+		onOpen(true);
+	};
+
+	const deleteTodoHandler = (id) => {
+		if (isDelete) {
+			const newTodoList = todoList.filter((objectItem) => todoList.indexOf(objectItem) !== id);
+			setTodoList(newTodoList);
+		}
 	};
 
 	const checkedStateHandler = (id) => {
@@ -78,8 +105,49 @@ function RenderedList({
 						variant={'outline'}
 						fontSize={'initial'}
 					/>
+					{isOpen && (
+						<AlertDialog
+							isOpen={isOpen}
+							leastDestructiveRef={cancelRef}
+							onClose={onClose}
+							motionPreset='none'
+							isCentered
+						>
+							<AlertDialogOverlay>
+								<AlertDialogContent maxWidth={'24rem'}>
+									<AlertDialogHeader
+										fontWeight={'bold'}
+										fontSize={'1.7rem'}
+										textAlign={'center'}
+									>
+										Delete Shopping Item
+									</AlertDialogHeader>
+
+									<AlertDialogBody fontSize={'1.4rem'}>
+										{"Are you sure? You can't undo this action afterwards 🚮"}
+									</AlertDialogBody>
+
+									<AlertDialogFooter>
+										<Button ref={cancelRef} onClick={onClose}>
+											Cancel
+										</Button>
+										<Button
+											colorScheme='red'
+											onClick={() => {
+												deleteTodoHandler(index);
+												onClose(true);
+											}}
+											ml={3}
+										>
+											Delete
+										</Button>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialogOverlay>
+						</AlertDialog>
+					)}
 					<IconButton
-						onClick={() => deleteHandler(index)}
+						onClick={deleteStateHandler}
 						className='delete-button'
 						colorScheme={'red'}
 						icon={<TbTrash />}

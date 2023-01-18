@@ -15,6 +15,7 @@ function ShoppingList() {
 	const [checkedID, setCheckedID] = useState([]);
 	const [editID, setEditID] = useState(0);
 	const [isEdit, setIsEdit] = useState(false);
+	const [isDelete, setIsDelete] = useState(false);
 	const [todoList, setTodoList] = useState(initialTodoList);
 
 	return (
@@ -77,7 +78,9 @@ function ShoppingList() {
 						setCheckedState={setCheckedState}
 						checkedState={checkedState}
 						todoList={todoList}
+						isDelete={isDelete}
 						setTodoList={setTodoList}
+						setIsDelete={setIsDelete}
 						setEditID={setEditID}
 						setIsEdit={setIsEdit}
 						setTodoPrice={setTodoPrice}
