@@ -36,12 +36,7 @@
 				"max": 3
 			}
 		],
-		"no-tabs": [
-			"warn",
-			{
-				"allowIndentationTabs": true
-			}
-		],
+		"no-tabs": ["off"],
 		"object-curly-newline": [
 			"error",
 			{
