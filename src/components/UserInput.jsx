@@ -55,16 +55,6 @@ function UserInput({
 		</Modal>
 	);
 
-	const productChangeHandler = (event) => {
-		const productInput = event.target;
-		setTodoProduct(productInput.value);
-	};
-
-	const priceChangeHandler = (event) => {
-		const priceInput = event.target;
-		setTodoPrice(priceInput.value);
-	};
-
 	const addTodoHandler = (event) => {
 		event.preventDefault();
 		if (todoProduct.length >= 3) {
@@ -134,7 +124,7 @@ function UserInput({
 					</InputLeftElement>
 					<Input
 						value={todoProduct}
-						onChange={productChangeHandler}
+						onChange={(e) => setTodoProduct(e.target.value)}
 						type='text'
 						placeholder={'What do you want to buy?'}
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
@@ -150,7 +140,7 @@ function UserInput({
 					</InputLeftElement>
 					<Input
 						value={todoPrice}
-						onChange={priceChangeHandler}
+						onChange={(e) => setTodoPrice(e.target.value)}
 						type='number'
 						paddingBlock={'2.2rem'}
 						boxShadow={'var(--shadow)'}
