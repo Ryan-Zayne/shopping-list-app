@@ -13,6 +13,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	useDisclosure,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import { BiDollar } from 'react-icons/bi';
 import { TbShoppingCart } from 'react-icons/tb';
@@ -31,6 +32,10 @@ function UserInput({
 	editID,
 }) {
 	const { onOpen, isOpen, onClose } = useDisclosure();
+	const inputBorderColor = useColorModeValue('none', '#20334b');
+	const inputIconColor = useColorModeValue('gray.700', 'white');
+	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
+
 	const modal = (
 		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
 			<ModalOverlay />
@@ -98,7 +103,7 @@ function UserInput({
 				alignItems={'center'}
 				gap={'2rem'}
 				padding={'1.5rem 1.6rem 4rem'}
-				boxShadow={'var(--shadow)'}
+				boxShadow={inputBoxShadow}
 				onSubmit={isEdit ? updateHandler : addTodoHandler}
 			>
 				<Heading
@@ -112,9 +117,9 @@ function UserInput({
 					Shopping List
 					<BsCart4 />
 				</Heading>
-				<InputGroup>
+				<InputGroup borderColor={inputBorderColor}>
 					<InputLeftElement
-						color={'gray.700'}
+						color={inputIconColor}
 						pointerEvents='none'
 						fontSize='1.2em'
 						height={'100%'}
@@ -134,8 +139,13 @@ function UserInput({
 						fontSize={'1.4rem'}
 					/>
 				</InputGroup>
-				<InputGroup>
-					<InputLeftElement pointerEvents='none' fontSize='1.2em' height={'100%'} color={'gray.700'}>
+				<InputGroup borderColor={inputBorderColor}>
+					<InputLeftElement
+						pointerEvents='none'
+						fontSize='1.2em'
+						height={'100%'}
+						color={inputIconColor}
+					>
 						<BiDollar />
 					</InputLeftElement>
 					<Input
@@ -152,7 +162,8 @@ function UserInput({
 				</InputGroup>
 
 				<Button
-					colorScheme={'blue'}
+					colorScheme={'blue-btn'}
+					color={'white'}
 					py={'1.84rem'}
 					px={'1.3rem'}
 					fontSize={'1.5rem'}

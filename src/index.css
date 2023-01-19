@@ -2,7 +2,10 @@
 /* General CSS Reset */
 /*-------------------*/
 :root {
-	--shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.2);
+	--shadow: 2px 2px 5px 1px hsla(0, 0%, 0%, 0.2);
+	--shadow-dark: 2px 2px 5px 1px hsla(0, 0%, 100%, 0.2);
+	--border-color: hsl(222, 40%, 11%);
+	--dark-mode-btn: hsl(214, 20%, 69%);
 }
 
 * {
@@ -53,4 +56,6 @@ button {
 
 body {
 	font-size: 1.6rem;
+	color: white;
+	line-height: 1.5;
 }

@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { Box, Flex, Heading, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
+
 import Balance from './Balance';
 import RenderedList from './RenderedList';
 import UserInput from './UserInput';
+import ToggleButton from './Togglebutton';
+
 
 function ShoppingList() {
 	const initialTodoList = [
@@ -18,77 +21,84 @@ function ShoppingList() {
 	const [isDelete, setIsDelete] = useState(false);
 	const [todoList, setTodoList] = useState(initialTodoList);
 
+	const bgWrapper = useColorModeValue('white', '#121212');
+
 	return (
 		<Flex
-			className='main-wrapper'
+			justify={'center'}
 			as={'section'}
-			align={'center'}
-			maxW={{ base: '65rem', md: 'unset', lg: '115rem' }}
-			direction={'column'}
-			border={'solid 2rem rgb(17, 24, 40)'}
-			borderRadius={'1.4rem'}
-			margin={{ base: '3rem auto', md: '4.3rem auto 2rem' }}
+			className='main-wrapper'
+			bgColor={bgWrapper}
+			paddingBlock={{ base: '6rem 3rem', md: '6rem 2rem' }}
+			position={'relative'}
 		>
-			<Box
-				className='heading'
-				as={'header'}
-				bgColor={'rgb(17, 24, 40)'}
-				w={'100%'}
-				paddingBlock={{ base: '0 2rem', md: '1.5rem 3.5rem' }}
-				mt={{ md: '-1px' }}
-			>
-				<Heading as={'h1'} fontSize={'3rem'} color={'hsl(0, 0%, 100%, 0.3)'}>
-					Welcome!
-				</Heading>
-				<Text color={'hsl(0, 0%, 100%, 0.4)'}>You are now watching Chakra-UI in action </Text>
-			</Box>
-
 			<Flex
-				direction={{ base: 'column', md: 'row' }}
-				gap={{ md: '3rem', lg: '7rem' }}
 				align={'center'}
-				borderRadius={'3px'}
-				w={'100%'}
-				p={{ base: '4rem 0', md: '2rem 3rem 4rem' }}
+				maxW={{ base: '65rem', md: 'unset', lg: '115rem' }}
+				direction={'column'}
+				border={'solid 2rem var(--border-color)'}
+				borderRadius={'1.4rem'}
 			>
-				<UserInput
-					isEdit={isEdit}
-					todoProduct={todoProduct}
-					todoPrice={todoPrice}
-					todoList={todoList}
-					editID={editID}
-					setIsEdit={setIsEdit}
-					setTodoList={setTodoList}
-					setTodoPrice={setTodoPrice}
-					setTodoProduct={setTodoProduct}
-					setCheckedState={setCheckedState}
-				/>
 
-				<Stack
-					spacing={'6rem'}
+				<ToggleButton />
+				<Box
+					className='heading'
+					as={'header'}
+					bgColor={'var(--border-color)'}
 					w={'100%'}
-					mt={{ base: '7rem', md: '4rem' }}
-					p={{ base: '0 1.6rem', md: '1.6rem' }}
-					borderTop={'solid 2.5px #0f43df'}
-					borderLeft={{ md: 'solid 2.5px #0f43df' }}
+					paddingBlock={{ base: '0 2rem', md: '1.5rem 3.5rem' }}
+					mt={{ md: '-1px' }}
 				>
-					<RenderedList
-						checkedID={checkedID}
-						setCheckedID={setCheckedID}
-						setCheckedState={setCheckedState}
-						checkedState={checkedState}
+					<Heading as={'h1'} fontSize={'3rem'} color={'hsl(0, 0%, 100%, 0.3)'}>
+						Welcome!
+					</Heading>
+					<Text color={'hsl(0, 0%, 100%, 0.4)'}>You are now watching Chakra-UI in action </Text>
+				</Box>
+				<Flex
+					direction={{ base: 'column', md: 'row' }}
+					gap={{ md: '3rem', lg: '7rem' }}
+					align={'center'}
+					borderRadius={'3px'}
+					w={'100%'}
+					p={{ base: '4rem 0', md: '2rem 3rem 4rem' }}
+				>
+					<UserInput
+						isEdit={isEdit}
+						todoProduct={todoProduct}
+						todoPrice={todoPrice}
 						todoList={todoList}
-						isDelete={isDelete}
-						setTodoList={setTodoList}
-						setIsDelete={setIsDelete}
-						setEditID={setEditID}
+						editID={editID}
 						setIsEdit={setIsEdit}
+						setTodoList={setTodoList}
 						setTodoPrice={setTodoPrice}
 						setTodoProduct={setTodoProduct}
+						setCheckedState={setCheckedState}
 					/>
-
-					<Balance todoList={todoList} checkedID={checkedID} />
-				</Stack>
+					<Stack
+						spacing={'6rem'}
+						w={'100%'}
+						mt={{ base: '7rem', md: '4rem' }}
+						p={{ base: '0 1.6rem', md: '1.6rem' }}
+						borderTop={'solid 2.5px #0f43df'}
+						borderLeft={{ md: 'solid 2.5px #0f43df' }}
+					>
+						<RenderedList
+							checkedID={checkedID}
+							setCheckedID={setCheckedID}
+							setCheckedState={setCheckedState}
+							checkedState={checkedState}
+							todoList={todoList}
+							isDelete={isDelete}
+							setTodoList={setTodoList}
+							setIsDelete={setIsDelete}
+							setEditID={setEditID}
+							setIsEdit={setIsEdit}
+							setTodoPrice={setTodoPrice}
+							setTodoProduct={setTodoProduct}
+						/>
+						<Balance todoList={todoList} checkedID={checkedID} />
+					</Stack>
+				</Flex>
 			</Flex>
 		</Flex>
 	);
