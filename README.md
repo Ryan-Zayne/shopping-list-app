@@ -9,3 +9,4 @@ This is a project I built for the purpose of learning and understanding the inne
     3. How to lift state up
     4. A quick trial with useRef hook
     5. Proper and frequent utilization of array methods and how they help in state management
+    6. Designing with Chakra UI
