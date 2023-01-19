@@ -30,8 +30,8 @@ function RenderedList({
 	setCheckedID,
 	checkedID,
 }) {
-	const { isOpen, onOpen, onClose } = useDisclosure();
 	const cancelRef = useRef();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const editHandler = (id) => {
 		setIsEdit(true);
@@ -51,6 +51,45 @@ function RenderedList({
 			setTodoList(newTodoList);
 		}
 	};
+
+	const deleteModalAlert = (id) => (
+		<AlertDialog
+			isOpen={isOpen}
+			leastDestructiveRef={cancelRef}
+			onClose={onClose}
+			motionPreset='none'
+			isCentered
+		>
+			<AlertDialogOverlay>
+				<AlertDialogContent maxWidth={'28rem'}>
+					<AlertDialogHeader fontWeight={'bold'} fontSize={'1.7rem'} textAlign={'center'}>
+						Delete Shopping Item
+					</AlertDialogHeader>
+
+					<AlertDialogBody fontSize={'1.4rem'}>
+						{"Are you sure? You can't undo this action afterwards 🚮"}
+					</AlertDialogBody>
+
+					<AlertDialogFooter>
+						<Button ref={cancelRef} onClick={onClose} fontSize={'1.25rem'}>
+							Cancel
+						</Button>
+						<Button
+							colorScheme='red'
+							onClick={() => {
+								deleteTodoHandler(id);
+								onClose(true);
+							}}
+							fontSize={'1.25rem'}
+							ml={3}
+						>
+							Delete
+						</Button>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialogOverlay>
+		</AlertDialog>
+	);
 
 	const checkedStateHandler = (id) => {
 		const updatedCheckState = checkedState.map((item, index) => (index === id ? !item : item));
@@ -107,47 +146,7 @@ function RenderedList({
 						variant={'outline'}
 						fontSize={'initial'}
 					/>
-					{isOpen && (
-						<AlertDialog
-							isOpen={isOpen}
-							leastDestructiveRef={cancelRef}
-							onClose={onClose}
-							motionPreset='none'
-							isCentered
-						>
-							<AlertDialogOverlay>
-								<AlertDialogContent maxWidth={'24rem'}>
-									<AlertDialogHeader
-										fontWeight={'bold'}
-										fontSize={'1.7rem'}
-										textAlign={'center'}
-									>
-										Delete Shopping Item
-									</AlertDialogHeader>
-
-									<AlertDialogBody fontSize={'1.4rem'}>
-										{"Are you sure? You can't undo this action afterwards 🚮"}
-									</AlertDialogBody>
-
-									<AlertDialogFooter>
-										<Button ref={cancelRef} onClick={onClose}>
-											Cancel
-										</Button>
-										<Button
-											colorScheme='red'
-											onClick={() => {
-												deleteTodoHandler(index);
-												onClose(true);
-											}}
-											ml={3}
-										>
-											Delete
-										</Button>
-									</AlertDialogFooter>
-								</AlertDialogContent>
-							</AlertDialogOverlay>
-						</AlertDialog>
-					)}
+					{isOpen && deleteModalAlert(index)}
 					<IconButton
 						onClick={deleteStateHandler}
 						className='delete-button'
