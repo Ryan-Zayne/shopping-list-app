@@ -35,7 +35,7 @@ function UserInput({
 	const inputBorderColor = useColorModeValue('none', '#20334b');
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
-	const borderAppearance = useColorModeValue('none', 'initial');
+	const borderAppearance = useColorModeValue('none', '#20334b');
 
 	const modal = (
 		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
