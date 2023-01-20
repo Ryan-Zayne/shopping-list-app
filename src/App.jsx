@@ -1,4 +1,4 @@
-import './index.css';
+
 import ShoppingList from './components/ShoppingList';
 
 function App() {

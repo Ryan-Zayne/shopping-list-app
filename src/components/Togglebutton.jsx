@@ -24,11 +24,10 @@ function ToggleButton() {
 				w={'5.4rem'}
 				h={'2.8rem'}
 			>
-				<BsFillMoonStarsFill color='yellow' fontSize={'1.4rem'} />
 				<FaSun color='yellow' fontSize={'1.6rem'} />
+				<BsFillMoonStarsFill color='pink' fontSize={'1.4rem'} />
 
 				<chakra.span
-					className='ball'
 					position={'absolute'}
 					borderRadius={'50%'}
 					w={'2rem'}
