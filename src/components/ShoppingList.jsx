@@ -34,7 +34,7 @@ function ShoppingList() {
 		>
 			<Flex
 				align={'center'}
-				maxW={{ base: '65rem', md: 'unset' }}
+				w={{ base: 'min(100%, 65rem)', md: 'min(100%, 110rem)' }}
 				direction={'column'}
 				border={'solid 2rem var(--border-color)'}
 				borderRadius={'1.4rem'}
