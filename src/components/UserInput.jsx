@@ -128,6 +128,7 @@ function UserInput({
 						<TbShoppingCart />
 					</InputLeftElement>
 					<Input
+						border={'none'}
 						value={todoProduct}
 						onChange={(e) => setTodoProduct(e.target.value)}
 						type='text'
@@ -149,6 +150,7 @@ function UserInput({
 						<BiDollar />
 					</InputLeftElement>
 					<Input
+						border={'none'}
 						value={todoPrice}
 						onChange={(e) => setTodoPrice(e.target.value)}
 						type='number'
