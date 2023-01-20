@@ -35,7 +35,7 @@ function UserInput({
 	const inputBorderColor = useColorModeValue('none', '#20334b');
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
-	const border = useColorModeValue('none', 'initial');
+	const borderAppearance = useColorModeValue('none', 'initial');
 
 	const modal = (
 		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
@@ -129,7 +129,7 @@ function UserInput({
 						<TbShoppingCart />
 					</InputLeftElement>
 					<Input
-						border={border}
+						border={borderAppearance}
 						value={todoProduct}
 						onChange={(e) => setTodoProduct(e.target.value)}
 						type='text'
@@ -151,7 +151,7 @@ function UserInput({
 						<BiDollar />
 					</InputLeftElement>
 					<Input
-						border={border}
+						border={borderAppearance}
 						value={todoPrice}
 						onChange={(e) => setTodoPrice(e.target.value)}
 						type='number'
