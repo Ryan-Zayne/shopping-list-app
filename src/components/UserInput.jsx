@@ -117,7 +117,7 @@ function UserInput({
 					Shopping List
 					<BsCart4 />
 				</Heading>
-				<InputGroup borderColor={inputBorderColor}>
+				<InputGroup>
 					<InputLeftElement
 						color={inputIconColor}
 						pointerEvents='none'
@@ -140,7 +140,7 @@ function UserInput({
 						fontSize={'1.4rem'}
 					/>
 				</InputGroup>
-				<InputGroup borderColor={inputBorderColor}>
+				<InputGroup>
 					<InputLeftElement
 						pointerEvents='none'
 						fontSize='1.2em'
