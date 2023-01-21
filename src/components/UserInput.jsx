@@ -36,7 +36,6 @@ function UserInput({
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 
-
 	const addTodoHandler = (event) => {
 		event.preventDefault();
 		if (todoProduct.length >= 3) {
@@ -81,11 +80,11 @@ function UserInput({
 
 	const updateHandler = (event) => {
 		event.preventDefault();
-		const updatedList = todoList.map((item) => {
-			if (todoList.indexOf(item) === editID) {
-				return { ...item, product: todoProduct, price: Number(todoPrice) };
+		const updatedList = todoList.map((objectItem) => {
+			if (todoList.indexOf(objectItem) === editID) {
+				return { ...objectItem, product: todoProduct, price: Number(todoPrice) };
 			}
-			return item;
+			return objectItem;
 		});
 
 		setTodoList(updatedList);
@@ -176,7 +175,7 @@ function UserInput({
 				>
 					{isEdit ? 'Edit Item' : 'Add Item'}
 				</Button>
-				{isOpen && modal}
+				{isOpen && modal()}
 			</FormControl>
 		</Box>
 	);
