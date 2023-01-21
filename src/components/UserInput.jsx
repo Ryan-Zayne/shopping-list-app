@@ -36,7 +36,26 @@ function UserInput({
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 
-	const modal = (
+
+	const addTodoHandler = (event) => {
+		event.preventDefault();
+		if (todoProduct.length >= 3) {
+			setTodoList((oldList) => [
+				...oldList,
+				{
+					product: todoProduct,
+					price: Number(todoPrice),
+				},
+			]);
+			setCheckedState((oldArr) => [...oldArr, false]);
+			setTodoProduct('');
+			setTodoPrice('');
+		} else {
+			onOpen(true);
+		}
+	};
+
+	const modal = () => (
 		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
 			<ModalOverlay />
 			<ModalContent maxWidth={'33.8rem'}>
@@ -59,24 +78,6 @@ function UserInput({
 			</ModalContent>
 		</Modal>
 	);
-
-	const addTodoHandler = (event) => {
-		event.preventDefault();
-		if (todoProduct.length >= 3) {
-			setTodoList((oldList) => [
-				...oldList,
-				{
-					product: todoProduct,
-					price: Number(todoPrice),
-				},
-			]);
-			setCheckedState((oldArr) => [...oldArr, false]);
-			setTodoProduct('');
-			setTodoPrice('');
-		} else {
-			onOpen(true);
-		}
-	};
 
 	const updateHandler = (event) => {
 		event.preventDefault();
