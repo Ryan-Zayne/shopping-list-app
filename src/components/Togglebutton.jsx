@@ -31,10 +31,10 @@ function ToggleButton() {
 					position={'absolute'}
 					borderRadius={'50%'}
 					w={'2rem'}
-					sx={{ 'aspect-ratio': '1' }}
+					style={{ 'aspect-ratio': '1' }}
 					bgColor={'hsl(0, 0%, 100%)'}
 					transform={colorMode === 'dark' && 'translate(2.4rem)'}
-					transition={"transform 200ms linear"}
+					transition={'transform 200ms linear'}
 				/>
 			</Flex>
 		</chakra.div>
