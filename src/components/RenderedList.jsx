@@ -118,7 +118,7 @@ function RenderedList({
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
 						checked={checkedState[index]}
 						value={item.product}
-						id={`checkbox${index}`}
+						id={`checkbox ${index}`}
 						onChange={() => {
 							checkedStateHandler(index);
 							CheckedIDHandler(index);
