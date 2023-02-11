@@ -9,7 +9,6 @@
 		"plugin:react/recommended",
 		"plugin:react/jsx-runtime",
 		"plugin:tailwindcss/recommended",
-		"prettier/prettier",
 		"prettier"
 	],
 	"overrides": [],
@@ -36,14 +35,9 @@
 				"max": 3
 			}
 		],
-		"no-tabs": ["off"],
-		"object-curly-newline": [
-			"error",
-			{
-				"multiline": true
-			}
-		],
-		"comma-dangle": ["off"],
+		"no-tabs": "off",
+		"object-curly-newline": "off",
+		"comma-dangle": "off",
 
 		//React plugin rules
 		"quote-props": "off",
