@@ -22,6 +22,7 @@
 		//Base Eslint Rules
 		"max-len": "off",
 		"indent": "off",
+		"no-tabs": "off",
 		"eol-last": "off",
 		"no-use-before-define": [
 			"error",
@@ -35,9 +36,15 @@
 				"max": 3
 			}
 		],
-		"no-tabs": "off",
-		"object-curly-newline": "off",
+
+		"object-curly-newline": [
+			"error",
+			{
+				"multiline": true
+			}
+		],
 		"comma-dangle": "off",
+		"arrow-body-style": "off",
 
 		//React plugin rules
 		"quote-props": "off",
@@ -66,6 +73,7 @@
 			}
 		],
 		"react/button-has-type": "off",
+		"react/function-component-definition": "off",
 
 		//Tailwind rules
 		"tailwindcss/no-custom-classname": "off",

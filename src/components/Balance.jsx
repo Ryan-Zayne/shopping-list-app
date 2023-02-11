@@ -8,7 +8,7 @@ function Balance({ todoList, checkedID }) {
 
 	const handleSpent = () => {
 		const spentCalc = todoList
-			.filter((item, index) => checkedID.includes(index))
+			.filter((_item, index) => checkedID.includes(index))
 			.reduce((accumulator, todo) => accumulator + todo.price, 0);
 		return spentCalc;
 	};

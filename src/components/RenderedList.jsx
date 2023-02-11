@@ -57,7 +57,7 @@ function RenderedList({
 			isOpen={isOpen}
 			leastDestructiveRef={cancelRef}
 			onClose={onClose}
-			motionPreset='none'
+			motionPreset="none"
 			isCentered
 		>
 			<AlertDialogOverlay>
@@ -75,7 +75,7 @@ function RenderedList({
 							Cancel
 						</Button>
 						<Button
-							colorScheme='red'
+							colorScheme="red"
 							onClick={() => {
 								deleteTodoHandler(id);
 								onClose(true);
@@ -105,7 +105,6 @@ function RenderedList({
 	const Listitems = todoList.map((item, index) => {
 		return (
 			<Flex
-				// eslint-disable-next-line react/no-array-index-key
 				key={index}
 				as={'li'}
 				justify={'space-between'}
@@ -115,7 +114,7 @@ function RenderedList({
 			>
 				<Stack direction={'row'} textTransform={'capitalize'}>
 					<chakra.input
-						type='checkbox'
+						type="checkbox"
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
 						checked={checkedState[index]}
 						value={item.product}
@@ -139,7 +138,7 @@ function RenderedList({
 					</chakra.span>
 					<IconButton
 						onClick={() => editHandler(index)}
-						className='edit-button'
+						className="edit-button"
 						size={'sm'}
 						colorScheme={'teal'}
 						icon={<TbEdit />}
@@ -149,7 +148,7 @@ function RenderedList({
 					{isOpen && deleteModalAlert(index)}
 					<IconButton
 						onClick={deleteStateHandler}
-						className='delete-button'
+						className="delete-button"
 						colorScheme={'red'}
 						icon={<TbTrash />}
 						size={'sm'}

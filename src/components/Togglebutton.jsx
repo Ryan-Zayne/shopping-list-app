@@ -24,14 +24,14 @@ function ToggleButton() {
 				w={'5.4rem'}
 				h={'2.8rem'}
 			>
-				<FaSun color='yellow' fontSize={'1.6rem'} />
-				<BsFillMoonStarsFill color='pink' fontSize={'1.4rem'} />
+				<FaSun color="yellow" fontSize={'1.6rem'} />
+				<BsFillMoonStarsFill color="pink" fontSize={'1.4rem'} />
 
 				<chakra.span
 					position={'absolute'}
 					borderRadius={'50%'}
 					w={'2rem'}
-					style={{ 'aspect-ratio': '1' }}
+					sx={{ aspectRatio: '1' }}
 					bgColor={'hsl(0, 0%, 100%)'}
 					transform={colorMode === 'dark' && 'translate(2.4rem)'}
 					transition={'transform 200ms linear'}
