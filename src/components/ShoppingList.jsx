@@ -6,7 +6,6 @@ import RenderedList from './RenderedList';
 import UserInput from './UserInput';
 import ToggleButton from './Togglebutton';
 
-
 function ShoppingList() {
 	const initialTodoList = [
 		{ product: "Veldora's Breath", price: 5000 },
@@ -27,7 +26,7 @@ function ShoppingList() {
 		<Flex
 			justify={'center'}
 			as={'section'}
-			className='main-wrapper'
+			className="main-wrapper"
 			bgColor={bgWrapper}
 			paddingBlock={{ base: '6rem 3rem', md: '6rem 2rem' }}
 			position={'relative'}
@@ -39,10 +38,9 @@ function ShoppingList() {
 				border={'solid 2rem var(--border-color)'}
 				borderRadius={'1.4rem'}
 			>
-
 				<ToggleButton />
 				<Box
-					className='heading'
+					className="heading"
 					as={'header'}
 					bgColor={'var(--border-color)'}
 					w={'100%'}
