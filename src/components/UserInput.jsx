@@ -55,7 +55,7 @@ function UserInput({
 	};
 
 	const modal = () => (
-		<Modal isOpen={isOpen} onClose={onClose} motionPreset="none" isCentered>
+		<Modal isOpen={isOpen} onClose={onClose} motionPreset='none' isCentered>
 			<ModalOverlay />
 			<ModalContent maxWidth={'33.8rem'}>
 				<ModalHeader fontWeight={'bold'} fontSize={{ base: '1.5rem', md: '1.47rem' }}>
@@ -70,7 +70,7 @@ function UserInput({
 				</ModalBody>
 
 				<ModalFooter>
-					<Button colorScheme="red" mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
+					<Button colorScheme='red' mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
 						Close
 					</Button>
 				</ModalFooter>
@@ -94,7 +94,7 @@ function UserInput({
 	};
 
 	return (
-		<Box className="form-wrapper" px={'1.6rem'} w={{ base: 'min(100%, 37rem)', md: '100%' }}>
+		<Box className='form-wrapper' px={'1.6rem'} w={{ base: 'min(100%, 37rem)', md: '100%' }}>
 			<FormControl
 				as={'form'}
 				mt={'2rem'}
@@ -120,8 +120,8 @@ function UserInput({
 				<InputGroup>
 					<InputLeftElement
 						color={inputIconColor}
-						pointerEvents="none"
-						fontSize="1.2em"
+						pointerEvents='none'
+						fontSize='1.2em'
 						height={'100%'}
 						width={'2.8rem'}
 					>
@@ -131,7 +131,7 @@ function UserInput({
 						border={borderAppearance}
 						value={todoProduct}
 						onChange={(e) => setTodoProduct(e.target.value)}
-						type="text"
+						type='text'
 						placeholder={'What do you want to buy?'}
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
 						paddingBlock={'2.2rem'}
@@ -142,8 +142,8 @@ function UserInput({
 				</InputGroup>
 				<InputGroup>
 					<InputLeftElement
-						pointerEvents="none"
-						fontSize="1.2em"
+						pointerEvents='none'
+						fontSize='1.2em'
 						height={'100%'}
 						color={inputIconColor}
 					>
@@ -153,10 +153,10 @@ function UserInput({
 						border={borderAppearance}
 						value={todoPrice}
 						onChange={(e) => setTodoPrice(e.target.value)}
-						type="number"
+						type='number'
 						paddingBlock={'2.2rem'}
 						boxShadow={'var(--shadow)'}
-						placeholder="Enter price"
+						placeholder='Enter price'
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
 						fontSize={'1.4rem'}
 						fontWeight={'bold'}

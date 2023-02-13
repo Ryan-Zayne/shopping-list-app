@@ -14,7 +14,7 @@ const colors = {
 const config = {
 	initialColorMode: 'system',
 	useSystemColorMode: true,
-	// disableTransitionOnChange: false,
+	disableTransitionOnChange: false,
 };
 
 const theme = extendTheme({ breakpoints, colors, config });
