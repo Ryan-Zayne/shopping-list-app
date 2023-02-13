@@ -51,7 +51,7 @@ button {
 	cursor: pointer;
 	line-height: inherit;
 	border: none;
-	outline: none;
+	outline-color: transparent;
 }
 
 body {

@@ -13,12 +13,10 @@ import {
 	Stack,
 	useDisclosure,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
 
 function RenderedList({
-	setIsDelete,
-	isDelete,
 	setIsEdit,
 	setTodoProduct,
 	setTodoPrice,
@@ -32,6 +30,7 @@ function RenderedList({
 }) {
 	const cancelRef = useRef();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const [deleteID, setDeleteID] = useState();
 
 	const editHandler = (id) => {
 		setIsEdit(true);
@@ -40,19 +39,17 @@ function RenderedList({
 		setTodoPrice(todoList[id].price);
 	};
 
-	const deleteStateHandler = () => {
-		setIsDelete(true);
-		onOpen(true);
-	};
-
 	const deleteTodoHandler = (id) => {
-		if (isDelete) {
-			const newTodoList = todoList.filter((objectItem) => todoList.indexOf(objectItem) !== id);
-			setTodoList(newTodoList);
-		}
+		const newTodoList = todoList.filter((objectItem) => todoList.indexOf(objectItem) !== id);
+		setTodoList(newTodoList);
 	};
 
-	const deleteModalAlert = (id) => (
+	const deleteStateHandler = (id) => {
+		onOpen(true);
+		setDeleteID(id);
+	};
+
+	const deleteModalAlert = (
 		<AlertDialog
 			isOpen={isOpen}
 			leastDestructiveRef={cancelRef}
@@ -77,7 +74,7 @@ function RenderedList({
 						<Button
 							colorScheme="red"
 							onClick={() => {
-								deleteTodoHandler(id);
+								deleteTodoHandler(deleteID);
 								onClose(true);
 							}}
 							fontSize={'1.25rem'}
@@ -105,6 +102,7 @@ function RenderedList({
 	const Listitems = todoList.map((item, index) => {
 		return (
 			<Flex
+				// Will change this later when I figure out how to make a custom id generator
 				key={index}
 				as={'li'}
 				justify={'space-between'}
@@ -136,6 +134,7 @@ function RenderedList({
 					<chakra.span fontStyle={'italic'} textDecoration={checkedState[index] && 'line-through'}>
 						${item.price}
 					</chakra.span>
+
 					<IconButton
 						onClick={() => editHandler(index)}
 						className="edit-button"
@@ -145,15 +144,16 @@ function RenderedList({
 						variant={'outline'}
 						fontSize={'initial'}
 					/>
-					{isOpen && deleteModalAlert(index)}
+
 					<IconButton
-						onClick={deleteStateHandler}
+						onClick={() => deleteStateHandler(index)}
 						className="delete-button"
 						colorScheme={'red'}
 						icon={<TbTrash />}
 						size={'sm'}
 						fontSize={'initial'}
 					/>
+					{deleteModalAlert}
 				</Stack>
 			</Flex>
 		);
