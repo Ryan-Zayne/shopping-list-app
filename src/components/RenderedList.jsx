@@ -102,7 +102,6 @@ function RenderedList({
 	const Listitems = todoList.map((item, index) => {
 		return (
 			<Flex
-				// Will change this later when I figure out how to make a custom id generator
 				key={index}
 				as={'li'}
 				justify={'space-between'}
@@ -116,7 +115,7 @@ function RenderedList({
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
 						checked={checkedState[index]}
 						value={item.product}
-						id={`checkbox${index}`}
+						id={`checkbox ${index}`}
 						onChange={() => {
 							checkedStateHandler(index);
 							CheckedIDHandler(index);
