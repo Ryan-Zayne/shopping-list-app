@@ -52,8 +52,8 @@ export const reducer = (state, action) => {
 		case ACTIONS.UPDATE_TODO_ITEM: {
 			return {
 				...state,
-				todoList: state.todoList.map((todoItem) => {
-					if (todoItem.id === state.editTarget) {
+				todoList: state.todoList.map((todoItem, index) => {
+					if (index === state.editTarget) {
 						return {
 							...todoItem,
 							product: state.todoInputs.todoProduct,
