@@ -1,5 +1,5 @@
 import { Box, chakra, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
 import { ACTIONS } from '../utils/actions';
 import DeleteAlertModal from './DeleteAlertModal';
@@ -7,7 +7,7 @@ import DeleteAlertModal from './DeleteAlertModal';
 function RenderedList({ todoList, dispatch }) {
 	const cancelRef = useRef();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [deleteTarget, setDeleteTarget] = useState();
+	const deleteRef = useRef(null);
 
 	const editHandler = (todoItemIndex) => {
 		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: true });
@@ -19,7 +19,7 @@ function RenderedList({ todoList, dispatch }) {
 	};
 
 	const deleteTodoHandler = () => {
-		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: { id: deleteTarget } });
+		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: { id: deleteRef.current } });
 	};
 
 	const checkedStateHandler = (todoItemIndex) => {
@@ -68,7 +68,7 @@ function RenderedList({ todoList, dispatch }) {
 
 					<IconButton
 						onClick={() => editHandler(index)}
-						className="edit-button"
+						id="edit-button"
 						size={'sm'}
 						colorScheme={'teal'}
 						icon={<TbEdit />}
@@ -79,9 +79,9 @@ function RenderedList({ todoList, dispatch }) {
 					<IconButton
 						onClick={() => {
 							onOpen(true);
-							setDeleteTarget(index);
+							deleteRef.current = index;
 						}}
-						className="delete-button"
+						id="delete-button"
 						colorScheme={'red'}
 						icon={<TbTrash />}
 						size={'sm'}

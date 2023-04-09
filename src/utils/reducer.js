@@ -68,15 +68,15 @@ export const reducer = (state, action) => {
 		case ACTIONS.DELETE_TODO_ITEM: {
 			return {
 				...state,
-				todoList: state.todoList.filter((todoItem) => todoItem.id !== action.payload.id),
+				todoList: state.todoList.filter((_, index) => index !== action.payload.id),
 			};
 		}
 
 		case ACTIONS.SET_CHECKED_STATE: {
 			return {
 				...state,
-				todoList: state.todoList.map((todoItem) => {
-					if (todoItem.id === action.payload.id) {
+				todoList: state.todoList.map((todoItem, index) => {
+					if (index === action.payload.id) {
 						return {
 							...todoItem,
 							isChecked: !todoItem.isChecked,
