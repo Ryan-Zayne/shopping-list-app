@@ -1,6 +1,6 @@
 import { Flex, Text } from '@chakra-ui/react';
 
-function Balance({ todoList, checkedID }) {
+function Balance({ todoList, checkedItems }) {
 	const handleTotal = () => {
 		const totalCalc = todoList.reduce((accumulator, todo) => accumulator + todo.price, 0);
 		return totalCalc;
@@ -8,7 +8,7 @@ function Balance({ todoList, checkedID }) {
 
 	const handleSpent = () => {
 		const spentCalc = todoList
-			.filter((_item, index) => checkedID.includes(index))
+			.filter((_, index) => checkedItems.includes(index))
 			.reduce((accumulator, todo) => accumulator + todo.price, 0);
 		return spentCalc;
 	};

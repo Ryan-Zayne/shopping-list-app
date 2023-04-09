@@ -6,91 +6,43 @@ import {
 	Input,
 	InputGroup,
 	InputLeftElement,
-	Modal,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-	useDisclosure,
 	useColorModeValue,
+	useDisclosure,
 } from '@chakra-ui/react';
+import { useRef } from 'react';
 import { BiDollar } from 'react-icons/bi';
-import { TbShoppingCart } from 'react-icons/tb';
 import { BsCart4 } from 'react-icons/bs';
+import { TbShoppingCart } from 'react-icons/tb';
+import { ACTIONS } from '../utils/actions';
+import InputModal from './InputModal';
 
-function UserInput({
-	todoList,
-	todoProduct,
-	todoPrice,
-	setTodoList,
-	setTodoPrice,
-	setTodoProduct,
-	setCheckedState,
-	isEdit,
-	setIsEdit,
-	editID,
-}) {
-	const { onOpen, isOpen, onClose } = useDisclosure();
+function UserInput({ isEdit, todoInputs, dispatch }) {
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
+	const { onOpen, isOpen, onClose } = useDisclosure();
+	const idRef = useRef(1);
+
+	const todoInputHandler = (event) => {
+		const { name, value } = event.target;
+		dispatch({ type: ACTIONS.SET_TODO_INPUTS, payload: { name, value } });
+	};
 
 	const addTodoHandler = (event) => {
 		event.preventDefault();
-		if (todoProduct.length >= 3) {
-			setTodoList((oldList) => [
-				...oldList,
-				{
-					product: todoProduct,
-					price: Number(todoPrice),
-				},
-			]);
-			setCheckedState((oldArr) => [...oldArr, false]);
-			setTodoProduct('');
-			setTodoPrice('');
+		if (todoInputs.todoProduct.length >= 3) {
+			dispatch({ type: ACTIONS.ADD_TODO_ITEM, payload: { todoItemId: (idRef.current += 1) } });
+			dispatch({ type: ACTIONS.CLEAR_TODO_INPUTS });
 		} else {
 			onOpen(true);
 		}
 	};
 
-	const modal = (
-		<Modal isOpen={isOpen} onClose={onClose} motionPreset="none" isCentered>
-			<ModalOverlay />
-			<ModalContent maxWidth={'33.8rem'}>
-				<ModalHeader fontWeight={'bold'} fontSize={{ base: '1.5rem', md: '1.47rem' }}>
-					Product name less than three characters!😐
-				</ModalHeader>
-
-				<ModalBody fontSize={'1.4rem'}>
-					<i>
-						<strong>Shey you dey whyne me ni?!</strong> Enter a reasonable product name there osiso!
-					</i>
-					😒
-				</ModalBody>
-
-				<ModalFooter>
-					<Button colorScheme="red" mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
-						Close
-					</Button>
-				</ModalFooter>
-			</ModalContent>
-		</Modal>
-	);
-
 	const updateHandler = (event) => {
 		event.preventDefault();
-		const updatedList = todoList.map((objectItem) => {
-			if (todoList.indexOf(objectItem) === editID) {
-				return { ...objectItem, product: todoProduct, price: Number(todoPrice) };
-			}
-			return objectItem;
-		});
-
-		setTodoList(updatedList);
-		setIsEdit(false);
-		setTodoProduct('');
-		setTodoPrice('');
+		dispatch({ type: ACTIONS.UPDATE_TODO_ITEM });
+		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: false });
+		dispatch({ type: ACTIONS.CLEAR_TODO_INPUTS });
 	};
 
 	return (
@@ -129,8 +81,9 @@ function UserInput({
 					</InputLeftElement>
 					<Input
 						border={borderAppearance}
-						value={todoProduct}
-						onChange={(e) => setTodoProduct(e.target.value)}
+						name={'todoProduct'}
+						value={todoInputs.todoProduct}
+						onChange={todoInputHandler}
 						type="text"
 						placeholder={'What do you want to buy?'}
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
@@ -151,8 +104,9 @@ function UserInput({
 					</InputLeftElement>
 					<Input
 						border={borderAppearance}
-						value={todoPrice}
-						onChange={(e) => setTodoPrice(e.target.value)}
+						name={'todoPrice'}
+						value={todoInputs.todoPrice}
+						onChange={todoInputHandler}
 						type="number"
 						paddingBlock={'2.2rem'}
 						boxShadow={'var(--shadow)'}
@@ -175,7 +129,7 @@ function UserInput({
 				>
 					{isEdit ? 'Edit Item' : 'Add Item'}
 				</Button>
-				{isOpen && modal}
+				{isOpen && <InputModal {...{ onClose, isOpen }} />}
 			</FormControl>
 		</Box>
 	);

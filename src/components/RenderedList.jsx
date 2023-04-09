@@ -1,108 +1,40 @@
-import {
-	AlertDialog,
-	AlertDialogBody,
-	AlertDialogContent,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogOverlay,
-	Box,
-	Button,
-	chakra,
-	Flex,
-	IconButton,
-	Stack,
-	useDisclosure,
-} from '@chakra-ui/react';
+import { Box, chakra, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { useRef, useState } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
+import { ACTIONS } from '../utils/actions';
+import DeleteAlertModal from './DeleteAlertModal';
 
-function RenderedList({
-	setIsEdit,
-	setTodoProduct,
-	setTodoPrice,
-	todoList,
-	setTodoList,
-	setEditID,
-	setCheckedState,
-	checkedState,
-	setCheckedID,
-	checkedID,
-}) {
+function RenderedList({ todoList, dispatch }) {
 	const cancelRef = useRef();
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [deleteID, setDeleteID] = useState();
+	const [deleteTarget, setDeleteTarget] = useState();
 
-	const editHandler = (id) => {
-		setIsEdit(true);
-		setEditID(id);
-		setTodoProduct(todoList[id].product);
-		setTodoPrice(todoList[id].price);
+	const editHandler = (todoItemIndex) => {
+		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: true });
+		dispatch({ type: ACTIONS.SET_EDIT_TARGET, payload: { id: todoItemIndex } });
+		dispatch({
+			type: ACTIONS.EDIT_TODO_INPUTS,
+			payload: [todoList[todoItemIndex].product, todoList[todoItemIndex].price],
+		});
 	};
 
-	const deleteTodoHandler = (id) => {
-		const newTodoList = todoList.filter((objectItem) => todoList.indexOf(objectItem) !== id);
-		setTodoList(newTodoList);
+	const deleteTodoHandler = () => {
+		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: { id: deleteTarget } });
 	};
 
-	const deleteStateHandler = (id) => {
-		onOpen(true);
-		setDeleteID(id);
+	const checkedStateHandler = (todoItemIndex) => {
+		dispatch({ type: ACTIONS.SET_CHECKED_STATE, payload: { id: todoItemIndex } });
 	};
 
-	const deleteModalAlert = (
-		<AlertDialog
-			isOpen={isOpen}
-			leastDestructiveRef={cancelRef}
-			onClose={onClose}
-			motionPreset="none"
-			isCentered
-		>
-			<AlertDialogOverlay>
-				<AlertDialogContent maxWidth={'28rem'}>
-					<AlertDialogHeader fontWeight={'bold'} fontSize={'1.7rem'} textAlign={'center'}>
-						Delete Shopping Item
-					</AlertDialogHeader>
-
-					<AlertDialogBody fontSize={'1.4rem'}>
-						{"Are you sure? You can't undo this action afterwards 🚮"}
-					</AlertDialogBody>
-
-					<AlertDialogFooter>
-						<Button ref={cancelRef} onClick={onClose} fontSize={'1.25rem'}>
-							Cancel
-						</Button>
-						<Button
-							colorScheme="red"
-							onClick={() => {
-								deleteTodoHandler(deleteID);
-								onClose(true);
-							}}
-							fontSize={'1.25rem'}
-							ml={3}
-						>
-							Delete
-						</Button>
-					</AlertDialogFooter>
-				</AlertDialogContent>
-			</AlertDialogOverlay>
-		</AlertDialog>
-	);
-
-	const checkedStateHandler = (id) => {
-		const updatedCheckState = checkedState.map((item, index) => (index === id ? !item : item));
-		setCheckedState(updatedCheckState);
+	const CheckedIDHandler = (todoItemIndex) => {
+		dispatch({ type: ACTIONS.SET_CHECKED_ITEMS, payload: { id: todoItemIndex } });
 	};
 
-	const CheckedIDHandler = (id) => {
-		setCheckedID((prevIDs) =>
-			checkedID.includes(id) ? checkedID.filter((i) => i !== id) : [...prevIDs, id]
-		);
-	};
-
-	const Listitems = todoList.map((item, index) => {
+	// You can use Children.toArray method auto assigns keys to lists without stable IDs
+	const Listitems = todoList.map((todoItem, index) => {
 		return (
 			<Flex
-				key={index}
+				key={todoItem.id}
 				as={'li'}
 				justify={'space-between'}
 				p={'1rem'}
@@ -113,25 +45,25 @@ function RenderedList({
 					<chakra.input
 						type="checkbox"
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
-						checked={checkedState[index]}
-						value={item.product}
-						id={`checkbox ${index}`}
+						checked={todoItem.isChecked}
+						value={todoItem.product}
+						id={`checkbox ${todoItem.isChecked}`}
 						onChange={() => {
 							checkedStateHandler(index);
 							CheckedIDHandler(index);
 						}}
 					/>
 					<chakra.label
-						textDecoration={checkedState[index] && 'line-through'}
+						textDecoration={todoItem.isChecked && 'line-through'}
 						htmlFor={`checkbox${index}`}
 					>
-						{item.product}
+						{todoItem.product}
 					</chakra.label>
 				</Stack>
 
 				<Stack direction={'row'} spacing={'1.2rem'} alignItems={'center'}>
-					<chakra.span fontStyle={'italic'} textDecoration={checkedState[index] && 'line-through'}>
-						${item.price}
+					<chakra.span fontStyle={'italic'} textDecoration={todoItem.isChecked && 'line-through'}>
+						${todoItem.price}
 					</chakra.span>
 
 					<IconButton
@@ -145,14 +77,17 @@ function RenderedList({
 					/>
 
 					<IconButton
-						onClick={() => deleteStateHandler(index)}
+						onClick={() => {
+							onOpen(true);
+							setDeleteTarget(index);
+						}}
 						className="delete-button"
 						colorScheme={'red'}
 						icon={<TbTrash />}
 						size={'sm'}
 						fontSize={'initial'}
 					/>
-					{deleteModalAlert}
+					<DeleteAlertModal {...{ cancelRef, isOpen, onClose, deleteTodoHandler }} />
 				</Stack>
 			</Flex>
 		);

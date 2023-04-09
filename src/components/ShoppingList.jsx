@@ -1,25 +1,15 @@
-import { useState } from 'react';
 import { Box, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
-
+import { useReducer } from 'react';
+import { reducer, initialState } from '../utils/reducer';
 import Balance from './Balance';
 import RenderedList from './RenderedList';
-import UserInput from './UserInput';
 import ToggleButton from './Togglebutton';
+import UserInput from './UserInput';
 
 function ShoppingList() {
-	const initialTodoList = [
-		{ product: "Veldora's Breath", price: 5000 },
-		{ product: "Pyromancer's Robe", price: 1500 },
-	];
-	const [todoProduct, setTodoProduct] = useState('');
-	const [todoPrice, setTodoPrice] = useState(0);
-	const [checkedState, setCheckedState] = useState([false, false]);
-	const [checkedID, setCheckedID] = useState([]);
-	const [editID, setEditID] = useState(0);
-	const [isEdit, setIsEdit] = useState(false);
-	const [todoList, setTodoList] = useState(initialTodoList);
-
 	const bgWrapper = useColorModeValue('white', '#121212');
+
+	const [state, dispatch] = useReducer(reducer, initialState);
 
 	return (
 		<Flex
@@ -59,18 +49,7 @@ function ShoppingList() {
 					w={'100%'}
 					p={{ base: '4rem 0', md: '2rem 3rem 4rem' }}
 				>
-					<UserInput
-						isEdit={isEdit}
-						todoProduct={todoProduct}
-						todoPrice={todoPrice}
-						todoList={todoList}
-						editID={editID}
-						setIsEdit={setIsEdit}
-						setTodoList={setTodoList}
-						setTodoPrice={setTodoPrice}
-						setTodoProduct={setTodoProduct}
-						setCheckedState={setCheckedState}
-					/>
+					<UserInput todoInputs={state.todoInputs} isEdit={state.isEdit} dispatch={dispatch} />
 					<Stack
 						spacing={'6rem'}
 						w={'100%'}
@@ -79,19 +58,8 @@ function ShoppingList() {
 						borderTop={'solid 2.5px #0f43df'}
 						borderLeft={{ md: 'solid 2.5px #0f43df' }}
 					>
-						<RenderedList
-							checkedID={checkedID}
-							setCheckedID={setCheckedID}
-							setCheckedState={setCheckedState}
-							checkedState={checkedState}
-							todoList={todoList}
-							setTodoList={setTodoList}
-							setEditID={setEditID}
-							setIsEdit={setIsEdit}
-							setTodoPrice={setTodoPrice}
-							setTodoProduct={setTodoProduct}
-						/>
-						<Balance todoList={todoList} checkedID={checkedID} />
+						<RenderedList todoList={state.todoList} dispatch={dispatch} />
+						<Balance checkedItems={state.checkedItems} todoList={state.todoList} />
 					</Stack>
 				</Flex>
 			</Flex>
