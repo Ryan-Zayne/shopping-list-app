@@ -11,7 +11,7 @@ export const initialState = {
 	editTarget: 0,
 };
 
-export const reducer = (state, action) => {
+export function reducer(state, action) {
 	switch (action.type) {
 		case ACTIONS.SET_TODO_INPUTS: {
 			return {
@@ -23,14 +23,18 @@ export const reducer = (state, action) => {
 		case ACTIONS.EDIT_TODO_INPUTS: {
 			return {
 				...state,
-				todoInputs: { todoProduct: action.payload[0], todoPrice: action.payload[1] },
+				todoInputs: {
+					...state.todoInputs,
+					todoProduct: action.payload[0],
+					todoPrice: action.payload[1],
+				},
 			};
 		}
 
 		case ACTIONS.CLEAR_TODO_INPUTS: {
 			return {
 				...state,
-				todoInputs: { todoProduct: '', todoPrice: '' },
+				todoInputs: { ...state.todoInputs, todoProduct: '', todoPrice: '' },
 			};
 		}
 
@@ -114,4 +118,4 @@ export const reducer = (state, action) => {
 			throw new Error(`Action type "${action.type}" is not recognized.`);
 		}
 	}
-};
+}
