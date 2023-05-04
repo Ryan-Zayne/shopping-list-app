@@ -30,8 +30,9 @@ function UserInput({ isEdit, todoInputs, dispatch }) {
 
 	const addTodoHandler = (event) => {
 		event.preventDefault();
+
 		if (todoInputs.todoProduct.length >= 3) {
-			dispatch({ type: ACTIONS.ADD_TODO_ITEM, payload: { todoItemId: (idRef.current += 1) } });
+			dispatch({ type: ACTIONS.ADD_TODO_ITEM, payload: (idRef.current += 1) });
 			dispatch({ type: ACTIONS.CLEAR_TODO_INPUTS });
 		} else {
 			onOpen(true);

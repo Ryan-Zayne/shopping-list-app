@@ -11,7 +11,7 @@ function RenderedList({ todoList, dispatch }) {
 
 	const editHandler = (todoItemIndex) => {
 		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: true });
-		dispatch({ type: ACTIONS.SET_EDIT_TARGET, payload: { id: todoItemIndex } });
+		dispatch({ type: ACTIONS.SET_EDIT_TARGET, payload: todoItemIndex });
 		dispatch({
 			type: ACTIONS.EDIT_TODO_INPUTS,
 			payload: [todoList[todoItemIndex].product, todoList[todoItemIndex].price],
@@ -19,18 +19,18 @@ function RenderedList({ todoList, dispatch }) {
 	};
 
 	const deleteTodoHandler = () => {
-		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: { id: deleteRef.current } });
+		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: deleteRef.current });
 	};
 
 	const checkedStateHandler = (todoItemIndex) => {
-		dispatch({ type: ACTIONS.SET_CHECKED_STATE, payload: { id: todoItemIndex } });
+		dispatch({ type: ACTIONS.SET_CHECKED_STATE, payload: todoItemIndex });
 	};
 
 	const CheckedIDHandler = (todoItemIndex) => {
-		dispatch({ type: ACTIONS.SET_CHECKED_ITEMS, payload: { id: todoItemIndex } });
+		dispatch({ type: ACTIONS.SET_CHECKED_ITEMS, payload: todoItemIndex });
 	};
 
-	// You can use Children.toArray method auto assigns keys to lists without stable IDs
+	// You can also use Children.toArray method auto assigns keys to lists without stable IDs
 	const Listitems = todoList.map((todoItem, index) => {
 		return (
 			<Flex

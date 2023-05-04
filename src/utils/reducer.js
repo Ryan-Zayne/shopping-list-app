@@ -20,6 +20,21 @@ export function reducer(state, action) {
 			};
 		}
 
+		case ACTIONS.ADD_TODO_ITEM: {
+			return {
+				...state,
+				todoList: [
+					...state.todoList,
+					{
+						id: action.payload,
+						product: state.todoInputs.todoProduct,
+						price: Number(state.todoInputs.todoPrice),
+						isChecked: false,
+					},
+				],
+			};
+		}
+
 		case ACTIONS.EDIT_TODO_INPUTS: {
 			return {
 				...state,
@@ -28,28 +43,6 @@ export function reducer(state, action) {
 					todoProduct: action.payload[0],
 					todoPrice: action.payload[1],
 				},
-			};
-		}
-
-		case ACTIONS.CLEAR_TODO_INPUTS: {
-			return {
-				...state,
-				todoInputs: { ...state.todoInputs, todoProduct: '', todoPrice: '' },
-			};
-		}
-
-		case ACTIONS.ADD_TODO_ITEM: {
-			return {
-				...state,
-				todoList: [
-					...state.todoList,
-					{
-						id: action.payload.todoItemId,
-						product: state.todoInputs.todoProduct,
-						price: Number(state.todoInputs.todoPrice),
-						isChecked: false,
-					},
-				],
 			};
 		}
 
@@ -69,10 +62,17 @@ export function reducer(state, action) {
 			};
 		}
 
+		case ACTIONS.CLEAR_TODO_INPUTS: {
+			return {
+				...state,
+				todoInputs: { ...state.todoInputs, todoProduct: '', todoPrice: '' },
+			};
+		}
+
 		case ACTIONS.DELETE_TODO_ITEM: {
 			return {
 				...state,
-				todoList: state.todoList.filter((_, index) => index !== action.payload.id),
+				todoList: state.todoList.filter((_, index) => index !== action.payload),
 			};
 		}
 
@@ -80,7 +80,7 @@ export function reducer(state, action) {
 			return {
 				...state,
 				todoList: state.todoList.map((todoItem, index) => {
-					if (index === action.payload.id) {
+					if (index === action.payload) {
 						return {
 							...todoItem,
 							isChecked: !todoItem.isChecked,
@@ -94,9 +94,9 @@ export function reducer(state, action) {
 		case ACTIONS.SET_CHECKED_ITEMS: {
 			return {
 				...state,
-				checkedItems: state.checkedItems.includes(action.payload.id)
-					? state.checkedItems.filter((checkedItem) => checkedItem !== action.payload.id)
-					: [...state.checkedItems, action.payload.id],
+				checkedItems: state.checkedItems.includes(action.payload)
+					? state.checkedItems.filter((checkedItem) => checkedItem !== action.payload)
+					: [...state.checkedItems, action.payload],
 			};
 		}
 
@@ -110,7 +110,7 @@ export function reducer(state, action) {
 		case ACTIONS.SET_EDIT_TARGET: {
 			return {
 				...state,
-				editTarget: action.payload.id,
+				editTarget: action.payload,
 			};
 		}
 
