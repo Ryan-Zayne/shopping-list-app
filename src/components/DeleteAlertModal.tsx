@@ -21,7 +21,7 @@ const DeleteAlertModal = ({ isOpen, cancelRef, onClose, deleteTodoHandler }: Del
 		leastDestructiveRef={cancelRef}
 		onClose={onClose}
 		motionPreset="none"
-		isCentered
+		isCentered={true}
 	>
 		<AlertDialogOverlay>
 			<AlertDialogContent maxWidth={'28rem'}>

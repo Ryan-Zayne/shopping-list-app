@@ -29,8 +29,6 @@ function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
 	const { onOpen, isOpen, onClose } = useDisclosure();
 	const idRef = useRef(1);
 
-	console.log(todoInputs);
-
 	const todoInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
