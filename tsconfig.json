@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"lib": ["DOM", "DOM.Iterable", "ESNext"],
+		"types": ["vite/client"],
+		"noImplicitAny": true,
+		"target": "ESNext",
+		"module": "ESNext",
+		"jsx": "preserve",
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": false,
+		"noFallthroughCasesInSwitch": true,
+		"allowJs": false,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		// "checkJs": true,
+		"noEmit": true,
+		"moduleResolution": "node",
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */
+	},
+
+	"include": ["src"],
+	"exclude": ["node_modules"],
+	"references": [{ "path": "./tsconfig.node.json" }]
+}

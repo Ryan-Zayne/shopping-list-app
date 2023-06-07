@@ -1,6 +1,6 @@
-import { useColorMode, Flex, chakra, useColorModeValue } from '@chakra-ui/react';
-import { FaSun } from 'react-icons/fa';
+import { Flex, chakra, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import { BsFillMoonStarsFill } from 'react-icons/bs';
+import { FaSun } from 'react-icons/fa';
 
 function ToggleButton() {
 	const { colorMode, toggleColorMode } = useColorMode();
@@ -33,7 +33,7 @@ function ToggleButton() {
 					w={'2rem'}
 					sx={{ aspectRatio: '1' }}
 					bgColor={'hsl(0, 0%, 100%)'}
-					transform={colorMode === 'dark' && 'translate(2.4rem)'}
+					transform={colorMode === 'dark' ? 'translate(2.4rem)' : 'initial'}
 					transition={'transform 200ms linear'}
 				/>
 			</Flex>

@@ -13,37 +13,45 @@ import { useRef } from 'react';
 import { BiDollar } from 'react-icons/bi';
 import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
-import { ACTIONS } from '../utils/actions';
+import { ActionObjectType, StateObjectType } from '../utils/reducer';
 import InputModal from './InputModal';
 
-function UserInput({ isEdit, todoInputs, dispatch }) {
+type UserInputProps = {
+	todoInputs: StateObjectType['todoInputs'];
+	isEditing: StateObjectType['isEditing'];
+	dispatch: React.Dispatch<ActionObjectType>;
+};
+
+function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 	const { onOpen, isOpen, onClose } = useDisclosure();
 	const idRef = useRef(1);
 
-	const todoInputHandler = (event) => {
+	console.log(todoInputs);
+
+	const todoInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-		dispatch({ type: ACTIONS.SET_TODO_INPUTS, payload: { name, value } });
+		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
 	};
 
-	const addTodoHandler = (event) => {
+	const addTodoHandler = (event: React.FormEvent<HTMLDivElement>) => {
 		event.preventDefault();
 
 		if (todoInputs.todoProduct.length >= 3) {
-			dispatch({ type: ACTIONS.ADD_TODO_ITEM, payload: (idRef.current += 1) });
-			dispatch({ type: ACTIONS.CLEAR_TODO_INPUTS });
+			dispatch({ type: 'ADD_TODO_ITEM', id: (idRef.current += 1) });
+			dispatch({ type: 'CLEAR_TODO_INPUTS' });
 		} else {
-			onOpen(true);
+			onOpen();
 		}
 	};
 
-	const updateHandler = (event) => {
+	const updateHandler = (event: React.FormEvent<HTMLDivElement>) => {
 		event.preventDefault();
-		dispatch({ type: ACTIONS.UPDATE_TODO_ITEM });
-		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: false });
-		dispatch({ type: ACTIONS.CLEAR_TODO_INPUTS });
+		dispatch({ type: 'UPDATE_TODO_ITEM' });
+		dispatch({ type: 'SET_EDIT_STATE', isEditing: false });
+		dispatch({ type: 'CLEAR_TODO_INPUTS' });
 	};
 
 	return (
@@ -57,7 +65,7 @@ function UserInput({ isEdit, todoInputs, dispatch }) {
 				gap={'2rem'}
 				padding={'1.5rem 1.6rem 4rem'}
 				boxShadow={inputBoxShadow}
-				onSubmit={isEdit ? updateHandler : addTodoHandler}
+				onSubmit={isEditing ? updateHandler : addTodoHandler}
 			>
 				<Heading
 					fontSize={'2.7rem'}
@@ -128,7 +136,7 @@ function UserInput({ isEdit, todoInputs, dispatch }) {
 					alignSelf={'start'}
 					type={'submit'}
 				>
-					{isEdit ? 'Edit Item' : 'Add Item'}
+					{isEditing ? 'Edit Item' : 'Add Item'}
 				</Button>
 				{isOpen && <InputModal {...{ onClose, isOpen }} />}
 			</FormControl>

@@ -8,7 +8,14 @@ import {
 	Button,
 } from '@chakra-ui/react';
 
-const DeleteAlertModal = ({ isOpen, cancelRef, onClose, deleteTodoHandler }) => (
+type DeleteAlertModalProps = {
+	isOpen: boolean;
+	cancelRef: React.RefObject<HTMLButtonElement>;
+	onClose: () => void;
+	deleteTodoHandler: () => void;
+};
+
+const DeleteAlertModal = ({ isOpen, cancelRef, onClose, deleteTodoHandler }: DeleteAlertModalProps) => (
 	<AlertDialog
 		isOpen={isOpen}
 		leastDestructiveRef={cancelRef}
@@ -34,7 +41,7 @@ const DeleteAlertModal = ({ isOpen, cancelRef, onClose, deleteTodoHandler }) => 
 						colorScheme="red"
 						onClick={() => {
 							deleteTodoHandler();
-							onClose(true);
+							onClose();
 						}}
 						fontSize={'1.25rem'}
 						ml={3}

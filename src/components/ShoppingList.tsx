@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
 import { useReducer } from 'react';
-import { reducer, initialState } from '../utils/reducer';
+import { initialState, reducer } from '../utils/reducer';
 import Balance from './Balance';
 import RenderedList from './RenderedList';
 import ToggleButton from './Togglebutton';
@@ -49,7 +49,8 @@ function ShoppingList() {
 					w={'100%'}
 					p={{ base: '4rem 0', md: '2rem 3rem 4rem' }}
 				>
-					<UserInput todoInputs={state.todoInputs} isEdit={state.isEdit} dispatch={dispatch} />
+					<UserInput todoInputs={state.todoInputs} isEditing={state.isEditing} dispatch={dispatch} />
+
 					<Stack
 						spacing={'6rem'}
 						w={'100%'}

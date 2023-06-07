@@ -1,37 +1,43 @@
 import { Box, chakra, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
-import { ACTIONS } from '../utils/actions';
+import { ActionObjectType, StateObjectType } from '../utils/reducer';
 import DeleteAlertModal from './DeleteAlertModal';
 
-function RenderedList({ todoList, dispatch }) {
-	const cancelRef = useRef();
-	const { isOpen, onOpen, onClose } = useDisclosure();
-	const deleteRef = useRef(null);
+type RenderedListProps = {
+	todoList: StateObjectType['todoList'];
+	dispatch: React.Dispatch<ActionObjectType>;
+};
 
-	const editHandler = (todoItemIndex) => {
-		dispatch({ type: ACTIONS.SET_EDIT_STATE, payload: true });
-		dispatch({ type: ACTIONS.SET_EDIT_TARGET, payload: todoItemIndex });
+function RenderedList({ todoList, dispatch }: RenderedListProps) {
+	const cancelRef = useRef<HTMLButtonElement>(null);
+	const { isOpen, onOpen, onClose } = useDisclosure();
+	const deleteRef = useRef(-1);
+
+	const editHandler = (todoItemIndex: number) => {
+		dispatch({ type: 'SET_EDIT_STATE', isEditing: true });
+		dispatch({ type: 'SET_EDIT_TARGET', todoIndex: todoItemIndex });
 		dispatch({
-			type: ACTIONS.EDIT_TODO_INPUTS,
-			payload: [todoList[todoItemIndex].product, todoList[todoItemIndex].price],
+			type: 'EDIT_TODO_INPUTS',
+			todoProduct: todoList[todoItemIndex].product,
+			todoPrice: todoList[todoItemIndex].price,
 		});
 	};
 
 	const deleteTodoHandler = () => {
-		dispatch({ type: ACTIONS.DELETE_TODO_ITEM, payload: deleteRef.current });
+		dispatch({ type: 'DELETE_TODO_ITEM', deleteIndex: deleteRef.current });
 	};
 
-	const checkedStateHandler = (todoItemIndex) => {
-		dispatch({ type: ACTIONS.SET_CHECKED_STATE, payload: todoItemIndex });
+	const checkedStateHandler = (todoItemIndex: number) => {
+		dispatch({ type: 'SET_CHECKED_STATE', todoIndex: todoItemIndex });
 	};
 
-	const CheckedIDHandler = (todoItemIndex) => {
-		dispatch({ type: ACTIONS.SET_CHECKED_ITEMS, payload: todoItemIndex });
+	const CheckedIDHandler = (todoItemIndex: number) => {
+		dispatch({ type: 'SET_CHECKED_ITEMS', todoIndex: todoItemIndex });
 	};
 
-	// You can also use Children.toArray method auto assigns keys to lists without stable IDs
-	const Listitems = todoList.map((todoItem, index) => {
+	// NOTE You can also use Children.toArray method auto assigns keys to lists without stable IDs
+	const Listitems = todoList.map((todoItem, index: number) => {
 		return (
 			<Flex
 				key={todoItem.id}
@@ -54,7 +60,7 @@ function RenderedList({ todoList, dispatch }) {
 						}}
 					/>
 					<chakra.label
-						textDecoration={todoItem.isChecked && 'line-through'}
+						textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
 						htmlFor={`checkbox${index}`}
 					>
 						{todoItem.product}
@@ -62,12 +68,16 @@ function RenderedList({ todoList, dispatch }) {
 				</Stack>
 
 				<Stack direction={'row'} spacing={'1.2rem'} alignItems={'center'}>
-					<chakra.span fontStyle={'italic'} textDecoration={todoItem.isChecked && 'line-through'}>
+					<chakra.span
+						fontStyle={'italic'}
+						textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
+					>
 						${todoItem.price}
 					</chakra.span>
 
 					<IconButton
 						onClick={() => editHandler(index)}
+						aria-label="edit"
 						id="edit-button"
 						size={'sm'}
 						colorScheme={'teal'}
@@ -78,9 +88,10 @@ function RenderedList({ todoList, dispatch }) {
 
 					<IconButton
 						onClick={() => {
-							onOpen(true);
+							onOpen();
 							deleteRef.current = index;
 						}}
+						aria-label="delete"
 						id="delete-button"
 						colorScheme={'red'}
 						icon={<TbTrash />}

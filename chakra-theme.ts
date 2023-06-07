@@ -14,10 +14,11 @@ const colors = {
 const config = {
 	initialColorMode: 'system',
 	useSystemColorMode: true,
-	disableTransitionOnChange: false,
+	disableTransitionOnChange: true,
 };
 
 const theme = extendTheme({ breakpoints, colors, config });
+
 delete theme.styles.globals;
 
 export default theme;

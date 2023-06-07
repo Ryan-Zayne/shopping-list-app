@@ -8,8 +8,13 @@ import {
 	ModalOverlay,
 } from '@chakra-ui/react';
 
-const InputModal = ({ isOpen, onClose }) => (
-	<Modal isOpen={isOpen} onClose={onClose} motionPreset="none" isCentered>
+type InputModalProps = {
+	isOpen: boolean;
+	onClose: () => void;
+};
+
+const InputModal = ({ isOpen, onClose }: InputModalProps) => (
+	<Modal isOpen={isOpen} onClose={onClose} motionPreset={'none'} isCentered={true}>
 		<ModalOverlay />
 		<ModalContent maxWidth={'33.8rem'}>
 			<ModalHeader fontWeight={'bold'} fontSize={{ base: '1.5rem', md: '1.47rem' }}>
