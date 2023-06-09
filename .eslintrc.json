@@ -16,23 +16,15 @@
 	],
 	"plugins": ["react", "tailwindcss", "@typescript-eslint"],
 
-	"overrides": [],
-
-	"parser": "@typescript-eslint/parser",
-
 	"parserOptions": {
+		"parser": "@typescript-eslint/parser",
+		"ecmaVersion": "latest",
+		"sourceType": "module",
+		// "tsconfigRootDir": "./",
 		"project": "./tsconfig.json"
 	},
 
 	"root": true,
-
-	// "settings": {
-	// 	"import/resolver": {
-	// 		"node": {
-	// 			"extensions": [".js", ".jsx", ".ts", ".tsx"]
-	// 		}
-	// 	}
-	// },
 
 	"rules": {
 		//Base Eslint Rules

@@ -6,6 +6,7 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"jsx": "preserve",
+		// "baseUrl": "./",
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowSyntheticDefaultImports": true,
@@ -20,7 +21,7 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 
-	"include": ["src"],
+	"include": ["src", "vite.config.ts", "vite-env.d.ts"],
 	"exclude": ["node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }
