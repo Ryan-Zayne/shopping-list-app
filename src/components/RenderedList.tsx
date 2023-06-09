@@ -53,7 +53,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 						mr={'clamp(1.2rem, 2.8vw, 5rem)'}
 						checked={todoItem.isChecked}
 						value={todoItem.product}
-						id={`checkbox ${todoItem.isChecked}`}
+						id={`checkbox${index}`}
 						onChange={() => {
 							checkedStateHandler(index);
 							CheckedIDHandler(index);
