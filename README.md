@@ -1,5 +1,5 @@
-# Shopping List SPA
-### With Create, Read, Update and Delete functionality
+# Shopping List SPA - With LocalStorage Sync feature
+### With Create, Read, Update and Delete  functionality
 
 This is a project I built for the purpose of learning and understanding the inner workings of react and its hooks which, in the case the one I used mainly in here is the useState hook.
 
