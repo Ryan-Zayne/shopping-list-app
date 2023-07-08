@@ -13,28 +13,32 @@ import { useRef } from 'react';
 import { BiDollar } from 'react-icons/bi';
 import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
-import { ActionObjectType, StateObjectType } from '../utils/reducer';
+import { ActionObjectType, StateObjectType } from '../features/todoReducer';
+import { confirmBeforeRefresh } from '../utils/confirm-before-refresh';
 import InputModal from './InputModal';
 
 type UserInputProps = {
 	todoInputs: StateObjectType['todoInputs'];
+	todoList: StateObjectType['todoList'];
 	isEditing: StateObjectType['isEditing'];
 	dispatch: React.Dispatch<ActionObjectType>;
 };
 
-function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
+function UserInput({ isEditing, todoInputs, todoList, dispatch }: UserInputProps) {
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 	const { onOpen, isOpen, onClose } = useDisclosure();
-	const idRef = useRef(1);
+	const idRef = useRef(todoList.at(-1)?.id ?? 1);
 
-	const todoInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const todoInputHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
 		const { name, value } = event.target;
+		confirmBeforeRefresh(name, value);
+
 		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
 	};
 
-	const addTodoHandler = (event: React.FormEvent<HTMLDivElement>) => {
+	const addTodoHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
 
 		if (todoInputs.todoProduct.length >= 3) {
@@ -45,8 +49,9 @@ function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
 		}
 	};
 
-	const updateHandler = (event: React.FormEvent<HTMLDivElement>) => {
+	const updateHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
+
 		dispatch({ type: 'UPDATE_TODO_ITEM' });
 		dispatch({ type: 'SET_EDIT_STATE', isEditing: false });
 		dispatch({ type: 'CLEAR_TODO_INPUTS' });
@@ -87,8 +92,8 @@ function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
 						<TbShoppingCart />
 					</InputLeftElement>
 					<Input
-						border={borderAppearance}
 						name={'todoProduct'}
+						border={borderAppearance}
 						value={todoInputs.todoProduct}
 						onChange={todoInputHandler}
 						type="text"
@@ -110,8 +115,8 @@ function UserInput({ isEditing, todoInputs, dispatch }: UserInputProps) {
 						<BiDollar />
 					</InputLeftElement>
 					<Input
-						border={borderAppearance}
 						name={'todoPrice'}
+						border={borderAppearance}
 						value={todoInputs.todoPrice}
 						onChange={todoInputHandler}
 						type="number"

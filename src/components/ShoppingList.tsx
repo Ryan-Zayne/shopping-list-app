@@ -1,6 +1,6 @@
 import { Box, Flex, Heading, Stack, Text, useColorModeValue } from '@chakra-ui/react';
-import { useReducer } from 'react';
-import { initialState, reducer } from '../utils/reducer';
+import { useEffect, useReducer } from 'react';
+import { defaultState, storedInitialState, todoReducer } from '../features/todoReducer';
 import Balance from './Balance';
 import RenderedList from './RenderedList';
 import ToggleButton from './Togglebutton';
@@ -9,7 +9,16 @@ import UserInput from './UserInput';
 function ShoppingList() {
 	const bgWrapper = useColorModeValue('white', '#121212');
 
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(todoReducer, storedInitialState);
+
+	// Hydrating local storage with defualt state on first time usage of the app
+	useEffect(() => {
+		const storedStateExistsOnLoad = localStorage.getItem('shopping-list-state') !== null;
+
+		if (!storedStateExistsOnLoad) {
+			localStorage.setItem('shopping-list-state', JSON.stringify(defaultState));
+		}
+	}, []);
 
 	return (
 		<Flex
@@ -49,7 +58,12 @@ function ShoppingList() {
 					w={'100%'}
 					p={{ base: '4rem 0', md: '2rem 3rem 4rem' }}
 				>
-					<UserInput todoInputs={state.todoInputs} isEditing={state.isEditing} dispatch={dispatch} />
+					<UserInput
+						todoInputs={state.todoInputs}
+						todoList={state.todoList}
+						isEditing={state.isEditing}
+						dispatch={dispatch}
+					/>
 
 					<Stack
 						spacing={'6rem'}

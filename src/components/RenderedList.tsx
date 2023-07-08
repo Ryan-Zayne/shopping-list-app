@@ -1,7 +1,7 @@
 import { Box, chakra, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
-import { ActionObjectType, StateObjectType } from '../utils/reducer';
+import { ActionObjectType, StateObjectType } from '../features/todoReducer';
 import DeleteAlertModal from './DeleteAlertModal';
 
 type RenderedListProps = {
@@ -20,7 +20,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 		dispatch({
 			type: 'EDIT_TODO_INPUTS',
 			todoProduct: todoList[todoItemIndex].product,
-			todoPrice: todoList[todoItemIndex].price,
+			todoPrice: String(todoList[todoItemIndex].price),
 		});
 	};
 

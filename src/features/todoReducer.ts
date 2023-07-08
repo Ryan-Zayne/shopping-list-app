@@ -1,7 +1,8 @@
 export type StateObjectType = {
 	todoInputs: {
 		todoProduct: string;
-		todoPrice: number;
+		// This type is string because target.value always returns string
+		todoPrice: string;
 	};
 
 	todoList: Array<{
@@ -19,7 +20,7 @@ export type StateObjectType = {
 export type ActionObjectType =
 	| { type: 'SET_TODO_INPUTS'; productKey: string; productValue: string }
 	| { type: 'ADD_TODO_ITEM'; id: number }
-	| { type: 'EDIT_TODO_INPUTS'; todoProduct: string; todoPrice: number }
+	| { type: 'EDIT_TODO_INPUTS'; todoProduct: string; todoPrice: string }
 	| { type: 'SET_EDIT_STATE'; isEditing: boolean }
 	| { type: 'SET_EDIT_TARGET'; todoIndex: number }
 	| { type: 'SET_CHECKED_STATE'; todoIndex: number }
@@ -28,8 +29,8 @@ export type ActionObjectType =
 	| { type: 'UPDATE_TODO_ITEM' }
 	| { type: 'CLEAR_TODO_INPUTS' };
 
-export const initialState: StateObjectType = {
-	todoInputs: { todoProduct: '', todoPrice: 0 },
+export const defaultState: StateObjectType = {
+	todoInputs: { todoProduct: '', todoPrice: '0' },
 	todoList: [
 		{ id: 0, product: "Veldora's Breath", price: 5000, isChecked: false },
 		{ id: 1, product: "Pyromancer's Robe", price: 1500, isChecked: false },
@@ -39,7 +40,16 @@ export const initialState: StateObjectType = {
 	editTarget: null,
 };
 
-export function reducer(state: StateObjectType, action: ActionObjectType) {
+export const storedInitialState = JSON.parse(
+	localStorage.getItem('shopping-list-state') ?? JSON.stringify(defaultState)
+) as StateObjectType;
+
+const syncStateWithStorage = (stateObject: StateObjectType) => {
+	localStorage.setItem('shopping-list-state', JSON.stringify(stateObject));
+	return stateObject;
+};
+
+export function todoReducer(state: StateObjectType, action: ActionObjectType): StateObjectType {
 	switch (action.type) {
 		case 'SET_TODO_INPUTS': {
 			return {
@@ -52,7 +62,7 @@ export function reducer(state: StateObjectType, action: ActionObjectType) {
 		}
 
 		case 'ADD_TODO_ITEM': {
-			return {
+			const newState = {
 				...state,
 				todoList: [
 					...state.todoList,
@@ -64,6 +74,8 @@ export function reducer(state: StateObjectType, action: ActionObjectType) {
 					},
 				],
 			};
+
+			return syncStateWithStorage(newState);
 		}
 
 		case 'EDIT_TODO_INPUTS': {
@@ -77,7 +89,7 @@ export function reducer(state: StateObjectType, action: ActionObjectType) {
 		}
 
 		case 'UPDATE_TODO_ITEM': {
-			return {
+			const updatedState = {
 				...state,
 				todoList: state.todoList.map((todoItem, index) => {
 					if (index === state.editTarget) {
@@ -90,24 +102,29 @@ export function reducer(state: StateObjectType, action: ActionObjectType) {
 					return todoItem;
 				}),
 			};
+
+			return syncStateWithStorage(updatedState);
 		}
 
 		case 'CLEAR_TODO_INPUTS': {
-			return {
+			const updatedState = {
 				...state,
-				todoInputs: initialState.todoInputs,
+				todoInputs: defaultState.todoInputs,
 			};
+			return syncStateWithStorage(updatedState);
 		}
 
 		case 'DELETE_TODO_ITEM': {
-			return {
+			const updatedState = {
 				...state,
 				todoList: state.todoList.filter((_, index) => index !== action.deleteIndex),
 			};
+
+			return syncStateWithStorage(updatedState);
 		}
 
 		case 'SET_CHECKED_STATE': {
-			return {
+			const updatedState = {
 				...state,
 				todoList: state.todoList.map((todoItem, index) => {
 					if (index === action.todoIndex) {
@@ -119,15 +136,17 @@ export function reducer(state: StateObjectType, action: ActionObjectType) {
 					return todoItem;
 				}),
 			};
+			return syncStateWithStorage(updatedState);
 		}
 
 		case 'SET_CHECKED_ITEMS': {
-			return {
+			const updatedState = {
 				...state,
 				checkedItems: state.checkedItems.includes(action.todoIndex)
 					? state.checkedItems.filter((checkedItem) => checkedItem !== action.todoIndex)
 					: [...state.checkedItems, action.todoIndex],
 			};
+			return syncStateWithStorage(updatedState);
 		}
 
 		case 'SET_EDIT_STATE': {

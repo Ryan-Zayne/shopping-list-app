@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { StateObjectType } from '../utils/reducer';
+import { StateObjectType } from '../features/todoReducer';
 
 type BalanceProps = {
 	todoList: StateObjectType['todoList'];
