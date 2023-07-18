@@ -1,5 +1,5 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { StateObjectType } from '../features/todoReducer';
+import { StateObjectType } from '../features/reducer-feature.types';
 
 type BalanceProps = {
 	todoList: StateObjectType['todoList'];
@@ -8,14 +8,20 @@ type BalanceProps = {
 
 function Balance({ todoList, checkedItems }: BalanceProps) {
 	const handleTotal = () => {
-		const totalCalc = todoList.reduce((accumulator, todo) => accumulator + todo.price, 0);
+		const totalCalc = todoList.reduce((accumulator, todoItem) => accumulator + todoItem.price, 0);
+
 		return totalCalc;
 	};
 
 	const handleSpent = () => {
-		const spentCalc = todoList
-			.filter((_, index) => checkedItems.includes(index))
-			.reduce((accumulator, todo) => accumulator + todo.price, 0);
+		const spentCalc = todoList.reduce((accumulator, todoItem, index) => {
+			if (checkedItems.includes(index)) {
+				return accumulator + todoItem.price;
+			}
+
+			return accumulator;
+		}, 0);
+
 		return spentCalc;
 	};
 

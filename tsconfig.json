@@ -6,7 +6,6 @@
 		"target": "ESNext",
 		"module": "ESNext",
 		"jsx": "preserve",
-		// "baseUrl": "./",
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowSyntheticDefaultImports": true,
@@ -15,7 +14,6 @@
 		"allowJs": false,
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		// "checkJs": true,
 		"noEmit": true,
 		"moduleResolution": "node",
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */

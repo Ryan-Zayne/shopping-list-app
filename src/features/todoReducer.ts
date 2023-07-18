@@ -1,35 +1,7 @@
-export type StateObjectType = {
-	todoInputs: {
-		todoProduct: string;
-		// This type is string because target.value always returns string
-		todoPrice: string;
-	};
+import { ActionObjectType, StateObjectType } from './reducer-feature.types';
+import { syncStateWithStorage } from './syncStateWithStorage';
 
-	todoList: Array<{
-		id: number;
-		product: string;
-		price: number;
-		isChecked: boolean;
-	}>;
-
-	checkedItems: number[];
-	isEditing: boolean;
-	editTarget: number | null;
-};
-
-export type ActionObjectType =
-	| { type: 'SET_TODO_INPUTS'; productKey: string; productValue: string }
-	| { type: 'ADD_TODO_ITEM'; id: number }
-	| { type: 'EDIT_TODO_INPUTS'; todoProduct: string; todoPrice: string }
-	| { type: 'SET_EDIT_STATE'; isEditing: boolean }
-	| { type: 'SET_EDIT_TARGET'; todoIndex: number }
-	| { type: 'SET_CHECKED_STATE'; todoIndex: number }
-	| { type: 'SET_CHECKED_ITEMS'; todoIndex: number }
-	| { type: 'DELETE_TODO_ITEM'; deleteIndex: number }
-	| { type: 'UPDATE_TODO_ITEM' }
-	| { type: 'CLEAR_TODO_INPUTS' };
-
-export const defaultState: StateObjectType = {
+const defaultState: StateObjectType = {
 	todoInputs: { todoProduct: '', todoPrice: '0' },
 	todoList: [
 		{ id: 0, product: "Veldora's Breath", price: 5000, isChecked: false },
@@ -40,16 +12,12 @@ export const defaultState: StateObjectType = {
 	editTarget: null,
 };
 
-export const storedInitialState = JSON.parse(
+const storedInitialState = JSON.parse(
 	localStorage.getItem('shopping-list-state') ?? JSON.stringify(defaultState)
 ) as StateObjectType;
 
-const syncStateWithStorage = (stateObject: StateObjectType) => {
-	localStorage.setItem('shopping-list-state', JSON.stringify(stateObject));
-	return stateObject;
-};
-
-export function todoReducer(state: StateObjectType, action: ActionObjectType): StateObjectType {
+// Reducer
+const todoReducer = (state: StateObjectType, action: ActionObjectType): StateObjectType => {
 	switch (action.type) {
 		case 'SET_TODO_INPUTS': {
 			return {
@@ -59,23 +27,6 @@ export function todoReducer(state: StateObjectType, action: ActionObjectType): S
 					[action.productKey]: action.productValue,
 				},
 			};
-		}
-
-		case 'ADD_TODO_ITEM': {
-			const newState = {
-				...state,
-				todoList: [
-					...state.todoList,
-					{
-						id: action.id,
-						product: state.todoInputs.todoProduct,
-						price: Number(state.todoInputs.todoPrice),
-						isChecked: false,
-					},
-				],
-			};
-
-			return syncStateWithStorage(newState);
 		}
 
 		case 'EDIT_TODO_INPUTS': {
@@ -88,8 +39,30 @@ export function todoReducer(state: StateObjectType, action: ActionObjectType): S
 			};
 		}
 
+		case 'CLEAR_TODO_INPUTS': {
+			return syncStateWithStorage({
+				...state,
+				todoInputs: defaultState.todoInputs,
+			});
+		}
+
+		case 'ADD_TODO_ITEM': {
+			return syncStateWithStorage({
+				...state,
+				todoList: [
+					...state.todoList,
+					{
+						id: action.id,
+						product: state.todoInputs.todoProduct,
+						price: Number(state.todoInputs.todoPrice),
+						isChecked: false,
+					},
+				],
+			});
+		}
+
 		case 'UPDATE_TODO_ITEM': {
-			const updatedState = {
+			return syncStateWithStorage({
 				...state,
 				todoList: state.todoList.map((todoItem, index) => {
 					if (index === state.editTarget) {
@@ -101,30 +74,18 @@ export function todoReducer(state: StateObjectType, action: ActionObjectType): S
 					}
 					return todoItem;
 				}),
-			};
-
-			return syncStateWithStorage(updatedState);
-		}
-
-		case 'CLEAR_TODO_INPUTS': {
-			const updatedState = {
-				...state,
-				todoInputs: defaultState.todoInputs,
-			};
-			return syncStateWithStorage(updatedState);
+			});
 		}
 
 		case 'DELETE_TODO_ITEM': {
-			const updatedState = {
+			return syncStateWithStorage({
 				...state,
 				todoList: state.todoList.filter((_, index) => index !== action.deleteIndex),
-			};
-
-			return syncStateWithStorage(updatedState);
+			});
 		}
 
 		case 'SET_CHECKED_STATE': {
-			const updatedState = {
+			return syncStateWithStorage({
 				...state,
 				todoList: state.todoList.map((todoItem, index) => {
 					if (index === action.todoIndex) {
@@ -135,18 +96,16 @@ export function todoReducer(state: StateObjectType, action: ActionObjectType): S
 					}
 					return todoItem;
 				}),
-			};
-			return syncStateWithStorage(updatedState);
+			});
 		}
 
 		case 'SET_CHECKED_ITEMS': {
-			const updatedState = {
+			return syncStateWithStorage({
 				...state,
 				checkedItems: state.checkedItems.includes(action.todoIndex)
 					? state.checkedItems.filter((checkedItem) => checkedItem !== action.todoIndex)
 					: [...state.checkedItems, action.todoIndex],
-			};
-			return syncStateWithStorage(updatedState);
+			});
 		}
 
 		case 'SET_EDIT_STATE': {
@@ -167,4 +126,6 @@ export function todoReducer(state: StateObjectType, action: ActionObjectType): S
 			throw new Error(`Action type is not recognized.`);
 		}
 	}
-}
+};
+
+export { defaultState, storedInitialState, todoReducer };

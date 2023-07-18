@@ -13,7 +13,7 @@ import { useRef } from 'react';
 import { BiDollar } from 'react-icons/bi';
 import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
-import { ActionObjectType, StateObjectType } from '../features/todoReducer';
+import { ActionObjectType, StateObjectType } from '../features/reducer-feature.types';
 import { confirmBeforeRefresh } from '../utils/confirm-before-refresh';
 import InputModal from './InputModal';
 
@@ -34,7 +34,6 @@ function UserInput({ isEditing, todoInputs, todoList, dispatch }: UserInputProps
 	const todoInputHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
 		const { name, value } = event.target;
 		confirmBeforeRefresh(name, value);
-
 		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
 	};
 

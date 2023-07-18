@@ -1,7 +1,7 @@
 import { Box, chakra, Flex, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
-import { ActionObjectType, StateObjectType } from '../features/todoReducer';
+import { ActionObjectType, StateObjectType } from '../features/reducer-feature.types';
 import DeleteAlertModal from './DeleteAlertModal';
 
 type RenderedListProps = {
@@ -12,7 +12,7 @@ type RenderedListProps = {
 function RenderedList({ todoList, dispatch }: RenderedListProps) {
 	const cancelRef = useRef<HTMLButtonElement>(null);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const deleteRef = useRef(-1);
+	const deleteTargetRef = useRef(-1);
 
 	const editHandler = (todoItemIndex: number) => {
 		dispatch({ type: 'SET_EDIT_STATE', isEditing: true });
@@ -25,7 +25,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 	};
 
 	const deleteTodoHandler = () => {
-		dispatch({ type: 'DELETE_TODO_ITEM', deleteIndex: deleteRef.current });
+		dispatch({ type: 'DELETE_TODO_ITEM', deleteIndex: deleteTargetRef.current });
 	};
 
 	const checkedStateHandler = (todoItemIndex: number) => {
@@ -37,7 +37,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 	};
 
 	// NOTE You can also use Children.toArray method auto assigns keys to lists without stable IDs
-	const Listitems = todoList.map((todoItem, index: number) => {
+	const ListItems = todoList.map((todoItem, index: number) => {
 		return (
 			<Flex
 				key={todoItem.id}
@@ -89,7 +89,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 					<IconButton
 						onClick={() => {
 							onOpen();
-							deleteRef.current = index;
+							deleteTargetRef.current = index;
 						}}
 						aria-label="delete"
 						id="delete-button"
@@ -98,6 +98,7 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 						size={'sm'}
 						fontSize={'initial'}
 					/>
+
 					<DeleteAlertModal {...{ cancelRef, isOpen, onClose, deleteTodoHandler }} />
 				</Stack>
 			</Flex>
@@ -106,8 +107,9 @@ function RenderedList({ todoList, dispatch }: RenderedListProps) {
 
 	return (
 		<Box as={'ul'} minH={'21rem'}>
-			{Listitems}
+			{ListItems}
 		</Box>
 	);
 }
+
 export default RenderedList;
