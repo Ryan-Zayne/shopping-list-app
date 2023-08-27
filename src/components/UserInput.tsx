@@ -9,31 +9,50 @@ import {
 	useColorModeValue,
 	useDisclosure,
 } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { BiDollar } from 'react-icons/bi';
 import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
-import { ActionObjectType, StateObjectType } from '../features/reducer-feature.types';
-import { confirmBeforeRefresh } from '../utils/confirm-before-refresh';
+import {
+	useDispatchContext,
+	useInputContext,
+	useIsEditingContext,
+	useTodoListContext,
+} from '../context/stateContextProvider';
 import InputModal from './InputModal';
 
-type UserInputProps = {
-	todoInputs: StateObjectType['todoInputs'];
-	todoList: StateObjectType['todoList'];
-	isEditing: StateObjectType['isEditing'];
-	dispatch: React.Dispatch<ActionObjectType>;
-};
+function UserInput() {
+	const todoInputs = useInputContext();
+	const todoList = useTodoListContext();
+	const isEditing = useIsEditingContext();
+	const dispatch = useDispatchContext();
 
-function UserInput({ isEditing, todoInputs, todoList, dispatch }: UserInputProps) {
+	const idRef = useRef(todoList.at(-1)?.id ?? 1);
+
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 	const { onOpen, isOpen, onClose } = useDisclosure();
-	const idRef = useRef(todoList.at(-1)?.id ?? 1);
+
+	useEffect(() => {
+		const handlebeforeUnload: OnBeforeUnloadEventHandler = (e: BeforeUnloadEvent) => {
+			e.preventDefault();
+
+			return (e.returnValue = '');
+		};
+
+		if (todoInputs.todoProduct !== '') {
+			window.addEventListener('beforeunload', handlebeforeUnload, { capture: true });
+		}
+
+		return () => {
+			window.removeEventListener('beforeunload', handlebeforeUnload, { capture: true });
+		};
+	}, [dispatch, isEditing, todoInputs.todoProduct]);
 
 	const todoInputHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
 		const { name, value } = event.target;
-		confirmBeforeRefresh(name, value);
+
 		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
 	};
 
@@ -51,7 +70,10 @@ function UserInput({ isEditing, todoInputs, todoList, dispatch }: UserInputProps
 	const updateHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
 
-		dispatch({ type: 'UPDATE_TODO_ITEM' });
+		if (todoInputs.todoProduct !== '') {
+			dispatch({ type: 'UPDATE_TODO_ITEM' });
+		}
+
 		dispatch({ type: 'SET_EDIT_STATE', isEditing: false });
 		dispatch({ type: 'CLEAR_TODO_INPUTS' });
 	};
@@ -146,4 +168,4 @@ function UserInput({ isEditing, todoInputs, todoList, dispatch }: UserInputProps
 	);
 }
 
-export default UserInput;
+export default memo(UserInput);

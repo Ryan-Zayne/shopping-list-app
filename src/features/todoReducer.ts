@@ -1,4 +1,4 @@
-import { ActionObjectType, StateObjectType } from './reducer-feature.types';
+import type { ActionObjectType, StateObjectType } from './reducer.types';
 import { syncStateWithStorage } from './syncStateWithStorage';
 
 const defaultState: StateObjectType = {
@@ -13,10 +13,15 @@ const defaultState: StateObjectType = {
 };
 
 const storedInitialState = JSON.parse(
-	localStorage.getItem('shopping-list-state') ?? JSON.stringify(defaultState)
+	localStorage.getItem('shopping-list-state') ??
+		JSON.stringify({
+			todoInputs: defaultState.todoInputs,
+			checkedItems: defaultState.checkedItems,
+			todoList: defaultState.todoList,
+		})
 ) as StateObjectType;
 
-// Reducer
+// Reducer Function
 const todoReducer = (state: StateObjectType, action: ActionObjectType): StateObjectType => {
 	switch (action.type) {
 		case 'SET_TODO_INPUTS': {
@@ -109,10 +114,10 @@ const todoReducer = (state: StateObjectType, action: ActionObjectType): StateObj
 		}
 
 		case 'SET_EDIT_STATE': {
-			return {
+			return syncStateWithStorage({
 				...state,
 				isEditing: action.isEditing,
-			};
+			});
 		}
 
 		case 'SET_EDIT_TARGET': {

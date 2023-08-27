@@ -1,7 +1,9 @@
-import { StateObjectType } from './reducer-feature.types';
+import type { StateObjectType } from './reducer.types';
 
 export const syncStateWithStorage = (stateObject: StateObjectType) => {
-	localStorage.setItem('shopping-list-state', JSON.stringify(stateObject));
+	const { editTarget, isEditing, ...storedStateSlice } = stateObject;
+
+	localStorage.setItem('shopping-list-state', JSON.stringify(storedStateSlice));
 
 	return stateObject;
 };

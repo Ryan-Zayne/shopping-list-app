@@ -8,6 +8,7 @@
 		"jsx": "preserve",
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
 		"allowSyntheticDefaultImports": true,
 		"esModuleInterop": false,
 		"noFallthroughCasesInSwitch": true,
@@ -19,7 +20,7 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 
-	"include": ["src", "vite.config.ts", "vite-env.d.ts"],
+	"include": ["src", "vite.config.ts", "vite-env.d.ts", "utils/compose.tsx"],
 	"exclude": ["node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

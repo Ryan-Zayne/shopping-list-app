@@ -1,12 +1,11 @@
 import { Flex, Text } from '@chakra-ui/react';
-import { StateObjectType } from '../features/reducer-feature.types';
+import { memo } from 'react';
+import { useCheckedItemsContext, useTodoListContext } from '../context/stateContextProvider';
 
-type BalanceProps = {
-	todoList: StateObjectType['todoList'];
-	checkedItems: StateObjectType['checkedItems'];
-};
+function Balance() {
+	const todoList = useTodoListContext();
+	const checkedItems = useCheckedItemsContext();
 
-function Balance({ todoList, checkedItems }: BalanceProps) {
 	const handleTotal = () => {
 		const totalCalc = todoList.reduce((accumulator, todoItem) => accumulator + todoItem.price, 0);
 
@@ -43,4 +42,4 @@ function Balance({ todoList, checkedItems }: BalanceProps) {
 	);
 }
 
-export default Balance;
+export default memo(Balance);
