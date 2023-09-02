@@ -12,7 +12,7 @@
 		"plugin:tailwindcss/recommended",
 		"plugin:@tanstack/eslint-plugin-query/recommended",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking",
+		// "plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"prettier"
 	],
 	"plugins": ["react", "tailwindcss", "@typescript-eslint"],

@@ -1,10 +1,10 @@
 import { Flex, Text } from '@chakra-ui/react';
 import { memo } from 'react';
-import { useCheckedItemsContext, useTodoListContext } from '../context/stateContextProvider';
+import { useTodoListContext } from '../context/stateContextProvider';
 
 function Balance() {
 	const todoList = useTodoListContext();
-	const checkedItems = useCheckedItemsContext();
+	const checkedItems = todoList.filter((todoItem) => todoItem.isChecked);
 
 	const handleTotal = () => {
 		const totalCalc = todoList.reduce((accumulator, todoItem) => accumulator + todoItem.price, 0);
@@ -13,8 +13,8 @@ function Balance() {
 	};
 
 	const handleSpent = () => {
-		const spentCalc = todoList.reduce((accumulator, todoItem, index) => {
-			if (checkedItems.includes(index)) {
+		const spentCalc = todoList.reduce((accumulator, todoItem) => {
+			if (checkedItems.includes(todoItem)) {
 				return accumulator + todoItem.price;
 			}
 

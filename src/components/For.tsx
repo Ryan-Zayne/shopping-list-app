@@ -6,4 +6,4 @@ function For<U>({ each, render }: ForProps<U>) {
 	return mappedElements;
 }
 
-export default For;
+export { For };

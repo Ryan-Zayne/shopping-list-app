@@ -1,44 +1,37 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useReducer } from 'react';
 import type { ActionObjectType, StateObjectType } from '../features/reducer.types';
-import { storedInitialState, todoReducer } from '../features/todoReducer';
+import { defaultState, todoReducer } from '../features/todoReducer';
+import { useDefinedContext } from '../hooks/useDefinedContext';
 
 // Contexts
-const InputContext = createContext<StateObjectType['todoInputs']>({} as StateObjectType['todoInputs']);
-const TodoListContext = createContext<StateObjectType['todoList']>({} as StateObjectType['todoList']);
-const CheckedItemsContext = createContext<StateObjectType['checkedItems']>(
-	{} as StateObjectType['checkedItems']
-);
-const IsEditingContext = createContext<StateObjectType['isEditing']>({} as StateObjectType['isEditing']);
-const EditTargetContext = createContext<StateObjectType['editTarget']>(
-	{} as StateObjectType['editTarget']
-);
-const DispatchStateContext = createContext<React.Dispatch<ActionObjectType>>(() => null);
+const TodoListContext = createContext<StateObjectType['todoList'] | null>(null);
+const IsEditingContext = createContext<StateObjectType['isEditing'] | null>(null);
+const EditTargetContext = createContext<StateObjectType['editTargetIndex'] | null>(null);
+const DispatchStateContext = createContext<React.Dispatch<ActionObjectType> | null>(null);
+
+const initialStoredState = JSON.parse(
+	localStorage.getItem('shopping-list-state') ?? JSON.stringify(defaultState) // fallback to defualt State
+) as StateObjectType;
 
 // Provider
 export function StateContextProvider({ children }: { children: React.ReactNode }) {
-	const [state, dispatch] = useReducer(todoReducer, storedInitialState);
+	const [state, dispatch] = useReducer(todoReducer, initialStoredState);
 
 	return (
 		<DispatchStateContext.Provider value={dispatch}>
-			<InputContext.Provider value={state.todoInputs}>
-				<TodoListContext.Provider value={state.todoList}>
-					<CheckedItemsContext.Provider value={state.checkedItems}>
-						<IsEditingContext.Provider value={state.isEditing}>
-							<EditTargetContext.Provider value={state.editTarget}>
-								{children}
-							</EditTargetContext.Provider>
-						</IsEditingContext.Provider>
-					</CheckedItemsContext.Provider>
-				</TodoListContext.Provider>
-			</InputContext.Provider>
+			<TodoListContext.Provider value={state.todoList}>
+				<IsEditingContext.Provider value={state.isEditing}>
+					<EditTargetContext.Provider value={state.editTargetIndex}>
+						{children}
+					</EditTargetContext.Provider>
+				</IsEditingContext.Provider>
+			</TodoListContext.Provider>
 		</DispatchStateContext.Provider>
 	);
 }
 
 // Hooks
-export const useInputContext = () => useContext(InputContext);
-export const useTodoListContext = () => useContext(TodoListContext);
-export const useIsEditingContext = () => useContext(IsEditingContext);
-export const useCheckedItemsContext = () => useContext(CheckedItemsContext);
-export const useEditTargetContext = () => useContext(EditTargetContext);
-export const useDispatchContext = () => useContext(DispatchStateContext);
+export const useTodoListContext = () => useDefinedContext(TodoListContext);
+export const useIsEditingContext = () => useDefinedContext(IsEditingContext);
+export const useEditTargetContext = () => useDefinedContext(EditTargetContext);
+export const useDispatchContext = () => useDefinedContext(DispatchStateContext);

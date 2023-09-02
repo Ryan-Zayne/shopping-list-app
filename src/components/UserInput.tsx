@@ -15,67 +15,75 @@ import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
 import {
 	useDispatchContext,
-	useInputContext,
 	useIsEditingContext,
 	useTodoListContext,
 } from '../context/stateContextProvider';
+import { useConfirmBeforeExit } from '../hooks/useConfirmBeforeExit';
 import InputModal from './InputModal';
 
 function UserInput() {
-	const todoInputs = useInputContext();
-	const todoList = useTodoListContext();
-	const isEditing = useIsEditingContext();
-	const dispatch = useDispatchContext();
-
-	const idRef = useRef(todoList.at(-1)?.id ?? 1);
-
 	const inputIconColor = useColorModeValue('gray.700', 'white');
 	const inputBoxShadow = useColorModeValue('var(--shadow)', 'var(--shadow-dark)');
 	const borderAppearance = useColorModeValue('none', 'solid 1px #20334b');
 	const { onOpen, isOpen, onClose } = useDisclosure();
 
+	const todoList = useTodoListContext();
+	const isEditing = useIsEditingContext();
+	const dispatch = useDispatchContext();
+
+	const productInputRef = useRef<HTMLInputElement>(null);
+	const priceInputRef = useRef<HTMLInputElement>(null);
+	const todoIdRef = useRef(todoList.at(-1)?.id ?? 1);
+
+	// Setting input refs to state on mount
 	useEffect(() => {
-		const handlebeforeUnload: OnBeforeUnloadEventHandler = (e: BeforeUnloadEvent) => {
-			e.preventDefault();
-
-			return (e.returnValue = '');
-		};
-
-		if (todoInputs.todoProduct !== '') {
-			window.addEventListener('beforeunload', handlebeforeUnload, { capture: true });
+		if (productInputRef.current && priceInputRef.current) {
+			dispatch({
+				type: 'SET_TODO_INPUT_REFS',
+				productInputElement: productInputRef.current,
+				priceInputElement: priceInputRef.current,
+			});
 		}
+	}, [dispatch]);
 
-		return () => {
-			window.removeEventListener('beforeunload', handlebeforeUnload, { capture: true });
-		};
-	}, [dispatch, isEditing, todoInputs.todoProduct]);
-
-	const todoInputHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		const { name, value } = event.target;
-
-		dispatch({ type: 'SET_TODO_INPUTS', productKey: name, productValue: value });
-	};
+	useConfirmBeforeExit(productInputRef.current);
 
 	const addTodoHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
 
-		if (todoInputs.todoProduct.length >= 3) {
-			dispatch({ type: 'ADD_TODO_ITEM', id: (idRef.current += 1) });
-			dispatch({ type: 'CLEAR_TODO_INPUTS' });
-		} else {
+		if (!productInputRef.current || !priceInputRef.current) return;
+
+		if (productInputRef.current?.value?.length < 3) {
 			onOpen();
+			return;
 		}
+
+		dispatch({
+			type: 'ADD_TODO_ITEM',
+			id: (todoIdRef.current += 1),
+			todoProduct: productInputRef.current.value,
+			todoPrice: Number(priceInputRef.current.value),
+		});
+
+		dispatch({ type: 'CLEAR_TODO_INPUT_STATE' });
 	};
 
-	const updateHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
+	const updateTodoHandler: React.FormEventHandler<HTMLDivElement> = (event) => {
 		event.preventDefault();
 
-		if (todoInputs.todoProduct !== '') {
-			dispatch({ type: 'UPDATE_TODO_ITEM' });
+		if (!productInputRef.current || !priceInputRef.current) return;
+
+		if (productInputRef.current?.value !== '') {
+			dispatch({
+				type: 'UPDATE_TODO_ITEM',
+				todoProduct: productInputRef.current.value,
+				todoPrice: Number(priceInputRef.current.value),
+			});
 		}
 
 		dispatch({ type: 'SET_EDIT_STATE', isEditing: false });
-		dispatch({ type: 'CLEAR_TODO_INPUTS' });
+		dispatch({ type: 'SET_EDIT_TARGET', editTargetIndex: null });
+		dispatch({ type: 'CLEAR_TODO_INPUT_STATE' });
 	};
 
 	return (
@@ -89,7 +97,7 @@ function UserInput() {
 				gap={'2rem'}
 				padding={'1.5rem 1.6rem 4rem'}
 				boxShadow={inputBoxShadow}
-				onSubmit={isEditing ? updateHandler : addTodoHandler}
+				onSubmit={isEditing ? updateTodoHandler : addTodoHandler}
 			>
 				<Heading
 					fontSize={'2.7rem'}
@@ -113,10 +121,9 @@ function UserInput() {
 						<TbShoppingCart />
 					</InputLeftElement>
 					<Input
+						ref={productInputRef}
 						name={'todoProduct'}
 						border={borderAppearance}
-						value={todoInputs.todoProduct}
-						onChange={todoInputHandler}
 						type="text"
 						placeholder={'What do you want to buy?'}
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
@@ -136,10 +143,9 @@ function UserInput() {
 						<BiDollar />
 					</InputLeftElement>
 					<Input
+						ref={priceInputRef}
 						name={'todoPrice'}
 						border={borderAppearance}
-						value={todoInputs.todoPrice}
-						onChange={todoInputHandler}
 						type="number"
 						paddingBlock={'2.2rem'}
 						boxShadow={'var(--shadow)'}

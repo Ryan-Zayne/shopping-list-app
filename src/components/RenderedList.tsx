@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { TbEdit, TbTrash } from 'react-icons/tb';
 import { useDispatchContext, useTodoListContext } from '../context/stateContextProvider';
 import DeleteAlertModal from './DeleteAlertModal';
-import For from './For';
+import { For as TodoListItems } from './For';
 
 function RenderedList({ children: BalanceComponent }: { children: React.ReactNode }) {
 	const todoList = useTodoListContext();
@@ -11,28 +11,15 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 
 	const cancelRef = useRef<HTMLButtonElement>(null);
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const deleteTargetRef = useRef(-1);
 
 	const editHandler = (todoItemIndex: number) => {
 		dispatch({ type: 'SET_EDIT_STATE', isEditing: true });
-		dispatch({ type: 'SET_EDIT_TARGET', todoIndex: todoItemIndex });
-		dispatch({
-			type: 'EDIT_TODO_INPUTS',
-			todoProduct: todoList[todoItemIndex].product,
-			todoPrice: String(todoList[todoItemIndex].price),
-		});
-	};
-
-	const deleteTodoHandler = () => {
-		dispatch({ type: 'DELETE_TODO_ITEM', deleteIndex: deleteTargetRef.current });
+		dispatch({ type: 'SET_EDIT_TARGET', editTargetIndex: todoItemIndex });
+		dispatch({ type: 'EDIT_TODO_INPUT_STATE', todoItemIndex });
 	};
 
 	const checkedStateHandler = (todoItemIndex: number) => {
-		dispatch({ type: 'SET_CHECKED_STATE', todoIndex: todoItemIndex });
-	};
-
-	const CheckedIDHandler = (todoItemIndex: number) => {
-		dispatch({ type: 'SET_CHECKED_ITEMS', todoIndex: todoItemIndex });
+		dispatch({ type: 'SET_CHECKED_TODO_STATE', todoItemIndex });
 	};
 
 	// NOTE You can also use Children.toArray method auto assigns keys to lists without stable IDs
@@ -114,7 +101,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 			borderLeft={{ md: 'solid 2.5px #0f43df' }}
 		>
 			<Box as={'ul'} minH={'21rem'}>
-				<For
+				<TodoListItems
 					each={todoList}
 					render={(todoItem, index) => (
 						<Flex
@@ -132,10 +119,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 									checked={todoItem.isChecked}
 									value={todoItem.product}
 									id={`checkbox${index}`}
-									onChange={() => {
-										checkedStateHandler(index);
-										CheckedIDHandler(index);
-									}}
+									onChange={() => checkedStateHandler(index)}
 								/>
 								<chakra.label
 									textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
@@ -165,10 +149,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 								/>
 
 								<IconButton
-									onClick={() => {
-										onOpen();
-										deleteTargetRef.current = index;
-									}}
+									onClick={() => onOpen()}
 									aria-label="delete"
 									id="delete-button"
 									colorScheme={'red'}
@@ -177,7 +158,9 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 									fontSize={'initial'}
 								/>
 
-								<DeleteAlertModal {...{ cancelRef, isOpen, onClose, deleteTodoHandler }} />
+								<DeleteAlertModal
+									{...{ cancelRef, isOpen, onClose, dispatch, deleteTargetIndex: index }}
+								/>
 							</Stack>
 						</Flex>
 					)}

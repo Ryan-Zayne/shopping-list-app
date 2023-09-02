@@ -1,22 +1,12 @@
 import { Box, Flex, Heading, Text, useColorModeValue } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import Balance from './components/Balance';
 import RenderedList from './components/RenderedList';
 import ToggleButton from './components/Togglebutton';
 import UserInput from './components/UserInput';
 import { StateContextProvider } from './context/stateContextProvider';
-import { defaultState } from './features/todoReducer';
 
 function App() {
 	const bgWrapper = useColorModeValue('white', '#121212');
-
-	useEffect(() => {
-		const storedStateExistsOnLoad = localStorage.getItem('shopping-list-state') !== null;
-
-		if (!storedStateExistsOnLoad) {
-			localStorage.setItem('shopping-list-state', JSON.stringify(defaultState));
-		}
-	}, []);
 
 	return (
 		<Flex
