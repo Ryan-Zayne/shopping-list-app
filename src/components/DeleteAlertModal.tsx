@@ -13,12 +13,17 @@ type DeleteAlertModalProps = {
 	isOpen: boolean;
 	cancelRef: React.RefObject<HTMLButtonElement>;
 	onClose: () => void;
-	deleteTargetIndex: number;
 	dispatch: React.Dispatch<ActionObjectType>;
 };
 
 const DeleteAlertModal = (props: DeleteAlertModalProps) => {
-	const { isOpen, cancelRef, onClose, dispatch, deleteTargetIndex } = props;
+	const { isOpen, cancelRef, onClose, dispatch } = props;
+
+	const deleteTodoHandler = () => {
+		dispatch({ type: 'DELETE_TODO_ITEM' });
+		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetIndex: null });
+		onClose();
+	};
 
 	return (
 		<AlertDialog
@@ -35,22 +40,14 @@ const DeleteAlertModal = (props: DeleteAlertModalProps) => {
 					</AlertDialogHeader>
 
 					<AlertDialogBody fontSize={'1.4rem'}>
-						{"Are you sure? You can't undo this action afterwards 🚮"}
+						{"Are you sure? You can't undo this action afterwards! 🚮"}
 					</AlertDialogBody>
 
 					<AlertDialogFooter>
 						<Button ref={cancelRef} onClick={onClose} fontSize={'1.25rem'}>
 							Cancel
 						</Button>
-						<Button
-							colorScheme="red"
-							onClick={() => {
-								dispatch({ type: 'DELETE_TODO_ITEM', deleteTargetIndex });
-								onClose();
-							}}
-							fontSize={'1.25rem'}
-							ml={3}
-						>
+						<Button colorScheme="red" onClick={deleteTodoHandler} fontSize={'1.25rem'} ml={3}>
 							Delete
 						</Button>
 					</AlertDialogFooter>

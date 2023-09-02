@@ -15,6 +15,7 @@ export type StateObjectType = {
 
 	isEditing: boolean;
 	editTargetIndex: number | null;
+	deleteTargetIndex: number | null;
 };
 
 export type ActionObjectType =
@@ -26,8 +27,9 @@ export type ActionObjectType =
 	| { type: 'EDIT_TODO_INPUT_STATE'; todoItemIndex: number }
 	| { type: 'CLEAR_TODO_INPUT_STATE' }
 	| { type: 'SET_EDIT_STATE'; isEditing: boolean }
-	| { type: 'SET_EDIT_TARGET'; editTargetIndex: number | null }
 	| { type: 'SET_CHECKED_TODO_STATE'; todoItemIndex: number }
 	| { type: 'ADD_TODO_ITEM'; id: number; todoProduct: string; todoPrice: number }
-	| { type: 'DELETE_TODO_ITEM'; deleteTargetIndex: number }
+	| { type: 'SET_DELETE_TARGET'; deleteTargetIndex: number | null }
+	| { type: 'DELETE_TODO_ITEM' }
+	| { type: 'SET_EDIT_TARGET'; editTargetIndex: number | null }
 	| { type: 'UPDATE_TODO_ITEM'; todoProduct: string; todoPrice: number };

@@ -12,6 +12,7 @@ export const defaultState: StateObjectType = {
 	],
 	isEditing: false,
 	editTargetIndex: null,
+	deleteTargetIndex: null,
 };
 
 // Reducer Function
@@ -79,7 +80,7 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 		case 'DELETE_TODO_ITEM': {
 			return syncStateWithStorage({
 				...state,
-				todoList: state.todoList.filter((_, index) => index !== action.deleteTargetIndex),
+				todoList: state.todoList.filter((_, index) => index !== state.deleteTargetIndex),
 			});
 		}
 
@@ -107,6 +108,13 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 			return {
 				...state,
 				editTargetIndex: action.editTargetIndex,
+			};
+		}
+
+		case 'SET_DELETE_TARGET': {
+			return {
+				...state,
+				deleteTargetIndex: action.deleteTargetIndex,
 			};
 		}
 

@@ -3,10 +3,9 @@ import type { ActionObjectType, StateObjectType } from '../features/reducer.type
 import { defaultState, todoReducer } from '../features/todoReducer';
 import { useDefinedContext } from '../hooks/useDefinedContext';
 
-// Contexts
+// Consumed Contexts
 const TodoListContext = createContext<StateObjectType['todoList'] | null>(null);
 const IsEditingContext = createContext<StateObjectType['isEditing'] | null>(null);
-const EditTargetContext = createContext<StateObjectType['editTargetIndex'] | null>(null);
 const DispatchStateContext = createContext<React.Dispatch<ActionObjectType> | null>(null);
 
 const initialStoredState = JSON.parse(
@@ -18,20 +17,15 @@ export function StateContextProvider({ children }: { children: React.ReactNode }
 	const [state, dispatch] = useReducer(todoReducer, initialStoredState);
 
 	return (
-		<DispatchStateContext.Provider value={dispatch}>
-			<TodoListContext.Provider value={state.todoList}>
-				<IsEditingContext.Provider value={state.isEditing}>
-					<EditTargetContext.Provider value={state.editTargetIndex}>
-						{children}
-					</EditTargetContext.Provider>
-				</IsEditingContext.Provider>
-			</TodoListContext.Provider>
-		</DispatchStateContext.Provider>
+		<TodoListContext.Provider value={state.todoList}>
+			<IsEditingContext.Provider value={state.isEditing}>
+				<DispatchStateContext.Provider value={dispatch}>{children}</DispatchStateContext.Provider>
+			</IsEditingContext.Provider>
+		</TodoListContext.Provider>
 	);
 }
 
 // Hooks
 export const useTodoListContext = () => useDefinedContext(TodoListContext);
 export const useIsEditingContext = () => useDefinedContext(IsEditingContext);
-export const useEditTargetContext = () => useDefinedContext(EditTargetContext);
 export const useDispatchContext = () => useDefinedContext(DispatchStateContext);

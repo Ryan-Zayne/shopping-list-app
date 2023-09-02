@@ -18,6 +18,11 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 		dispatch({ type: 'EDIT_TODO_INPUT_STATE', todoItemIndex });
 	};
 
+	const deleteHandler = (todoItemIndex: number) => {
+		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetIndex: todoItemIndex });
+		onOpen();
+	};
+
 	const checkedStateHandler = (todoItemIndex: number) => {
 		dispatch({ type: 'SET_CHECKED_TODO_STATE', todoItemIndex });
 	};
@@ -149,7 +154,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 								/>
 
 								<IconButton
-									onClick={() => onOpen()}
+									onClick={() => deleteHandler(index)}
 									aria-label="delete"
 									id="delete-button"
 									colorScheme={'red'}
@@ -158,9 +163,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 									fontSize={'initial'}
 								/>
 
-								<DeleteAlertModal
-									{...{ cancelRef, isOpen, onClose, dispatch, deleteTargetIndex: index }}
-								/>
+								<DeleteAlertModal {...{ cancelRef, isOpen, onClose, dispatch }} />
 							</Stack>
 						</Flex>
 					)}
