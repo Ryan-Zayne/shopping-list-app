@@ -122,9 +122,10 @@ function UserInput() {
 					</InputLeftElement>
 					<Input
 						ref={productInputRef}
+						id={'todoProduct'}
 						name={'todoProduct'}
 						border={borderAppearance}
-						type="text"
+						type={'text'}
 						placeholder={'What do you want to buy?'}
 						_placeholder={{ fontWeight: 'bold', fontStyle: 'italic' }}
 						paddingBlock={'2.2rem'}
@@ -144,9 +145,10 @@ function UserInput() {
 					</InputLeftElement>
 					<Input
 						ref={priceInputRef}
+						id={'todoPrice'}
 						name={'todoPrice'}
 						border={borderAppearance}
-						type="number"
+						type={'number'}
 						paddingBlock={'2.2rem'}
 						boxShadow={'var(--shadow)'}
 						placeholder="Enter price"
