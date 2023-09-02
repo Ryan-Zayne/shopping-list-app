@@ -1,7 +1,7 @@
 import type { ActionObjectType, StateObjectType } from './reducer.types';
 import { syncStateWithStorage } from './syncStateWithStorage';
 
-export const defaultState = {
+export const defaultState: StateObjectType = {
 	todoInputRefs: {
 		productInputElement: null as unknown as HTMLInputElement,
 		priceInputElement: null as unknown as HTMLInputElement,
@@ -12,7 +12,7 @@ export const defaultState = {
 	],
 	isEditing: false,
 	editTargetIndex: null,
-} as StateObjectType;
+};
 
 // Reducer Function
 export const todoReducer = (state: StateObjectType, action: ActionObjectType): StateObjectType => {
@@ -29,9 +29,10 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 
 		case 'EDIT_TODO_INPUT_STATE': {
 			const { productInputElement, priceInputElement } = state.todoInputRefs;
+			const todoItem = state.todoList[action.todoItemIndex];
 
-			productInputElement.value = state.todoList[action.todoItemIndex].product;
-			priceInputElement.value = String(state.todoList[action.todoItemIndex].price);
+			productInputElement.value = todoItem.product;
+			priceInputElement.value = String(todoItem.price);
 
 			return state;
 		}
@@ -67,7 +68,6 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 
 			return syncStateWithStorage({
 				...state,
-
 				todoList: state.todoList.with(editTargetIndex, {
 					...todoList[editTargetIndex],
 					product: action.todoProduct,
@@ -85,12 +85,13 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 
 		case 'SET_CHECKED_TODO_STATE': {
 			const { todoList } = state;
+			const todoItem = todoList[action.todoItemIndex];
 
 			return syncStateWithStorage({
 				...state,
 				todoList: todoList.with(action.todoItemIndex, {
-					...todoList[action.todoItemIndex],
-					isChecked: !todoList[action.todoItemIndex].isChecked,
+					...todoItem,
+					isChecked: !todoItem.isChecked,
 				}),
 			});
 		}
@@ -110,7 +111,7 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 		}
 
 		default: {
-			throw new Error(`Action type is not recognized.`);
+			throw new Error(`Action type is unhandled: ${(action as ActionObjectType).type}`);
 		}
 	}
 };
