@@ -15,7 +15,7 @@ import { BsCart4 } from 'react-icons/bs';
 import { TbShoppingCart } from 'react-icons/tb';
 import {
 	useDispatchContext,
-	useIsEditingContext,
+	useIsEditModeContext,
 	useTodoListContext,
 } from '../context/stateContextProvider';
 import { useConfirmBeforeExit } from '../hooks/useConfirmBeforeExit';
@@ -28,12 +28,12 @@ function UserInput() {
 	const { onOpen, isOpen, onClose } = useDisclosure();
 
 	const todoList = useTodoListContext();
-	const isEditing = useIsEditingContext();
+	const isEditMode = useIsEditModeContext();
 	const dispatch = useDispatchContext();
 
 	const productInputRef = useRef<HTMLInputElement>(null);
 	const priceInputRef = useRef<HTMLInputElement>(null);
-	const todoIdRef = useRef(todoList.at(-1)?.id ?? 1);
+	const lastTodoStoreId = todoList.at(-1)?.id ?? 0;
 
 	// Setting input refs to state on mount
 	useEffect(() => {
@@ -60,7 +60,7 @@ function UserInput() {
 
 		dispatch({
 			type: 'ADD_TODO_ITEM',
-			id: (todoIdRef.current += 1),
+			id: lastTodoStoreId + 1,
 			todoProduct: productInputRef.current.value,
 			todoPrice: Number(priceInputRef.current.value),
 		});
@@ -81,9 +81,9 @@ function UserInput() {
 			});
 		}
 
-		dispatch({ type: 'SET_EDIT_STATE', isEditing: false });
-		dispatch({ type: 'SET_EDIT_TARGET', editTargetIndex: null });
 		dispatch({ type: 'CLEAR_TODO_INPUT_STATE' });
+		dispatch({ type: 'SET_EDIT_STATE', isEditMode: false });
+		dispatch({ type: 'SET_EDIT_TARGET', editTargetID: null });
 	};
 
 	return (
@@ -97,7 +97,7 @@ function UserInput() {
 				gap={'2rem'}
 				padding={'1.5rem 1.6rem 4rem'}
 				boxShadow={inputBoxShadow}
-				onSubmit={isEditing ? updateTodoHandler : addTodoHandler}
+				onSubmit={isEditMode ? updateTodoHandler : addTodoHandler}
 			>
 				<Heading
 					fontSize={'2.7rem'}
@@ -168,7 +168,7 @@ function UserInput() {
 					alignSelf={'start'}
 					type={'submit'}
 				>
-					{isEditing ? 'Edit Item' : 'Add Item'}
+					{isEditMode ? 'Edit Item' : 'Add Item'}
 				</Button>
 				{isOpen && <InputModal {...{ onClose, isOpen }} />}
 			</FormControl>

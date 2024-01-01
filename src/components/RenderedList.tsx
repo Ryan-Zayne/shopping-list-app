@@ -13,13 +13,13 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const editHandler = (todoItemIndex: number) => {
-		dispatch({ type: 'SET_EDIT_STATE', isEditing: true });
-		dispatch({ type: 'SET_EDIT_TARGET', editTargetIndex: todoItemIndex });
+		dispatch({ type: 'SET_EDIT_STATE', isEditMode: true });
+		dispatch({ type: 'SET_EDIT_TARGET', editTargetID: todoItemIndex });
 		dispatch({ type: 'EDIT_TODO_INPUT_STATE', todoItemIndex });
 	};
 
 	const deleteHandler = (todoItemIndex: number) => {
-		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetIndex: todoItemIndex });
+		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetID: todoItemIndex });
 		onOpen();
 	};
 
@@ -28,73 +28,6 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 	};
 
 	// NOTE You can also use Children.toArray method auto assigns keys to lists without stable IDs
-	// const ListItems = todoList.map((todoItem, index) => {
-	// 	return (
-	// 		<Flex
-	// 			key={todoItem.id}
-	// 			as={'li'}
-	// 			justify={'space-between'}
-	// 			p={'1rem'}
-	// 			borderBottom={'2px solid blue'}
-	// 			gap={'1rem'}
-	// 		>
-	// 			<Stack direction={'row'} textTransform={'capitalize'}>
-	// 				<chakra.input
-	// 					type="checkbox"
-	// 					mr={'clamp(1.2rem, 2.8vw, 5rem)'}
-	// 					checked={todoItem.isChecked}
-	// 					value={todoItem.product}
-	// 					id={`checkbox${index}`}
-	// 					onChange={() => {
-	// 						checkedStateHandler(index);
-	// 						CheckedIDHandler(index);
-	// 					}}
-	// 				/>
-	// 				<chakra.label
-	// 					textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
-	// 					htmlFor={`checkbox${index}`}
-	// 				>
-	// 					{todoItem.product}
-	// 				</chakra.label>
-	// 			</Stack>
-
-	// 			<Stack direction={'row'} spacing={'1.2rem'} alignItems={'center'}>
-	// 				<chakra.span
-	// 					fontStyle={'italic'}
-	// 					textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
-	// 				>
-	// 					${todoItem.price}
-	// 				</chakra.span>
-
-	// 				<IconButton
-	// 					onClick={() => editHandler(index)}
-	// 					aria-label="edit"
-	// 					id="edit-button"
-	// 					size={'sm'}
-	// 					colorScheme={'teal'}
-	// 					icon={<TbEdit />}
-	// 					variant={'outline'}
-	// 					fontSize={'initial'}
-	// 				/>
-
-	// 				<IconButton
-	// 					onClick={() => {
-	// 						onOpen();
-	// 						deleteTargetRef.current = index;
-	// 					}}
-	// 					aria-label="delete"
-	// 					id="delete-button"
-	// 					colorScheme={'red'}
-	// 					icon={<TbTrash />}
-	// 					size={'sm'}
-	// 					fontSize={'initial'}
-	// 				/>
-
-	// 				<DeleteAlertModal {...{ cancelRef, isOpen, onClose, deleteTodoHandler }} />
-	// 			</Stack>
-	// 		</Flex>
-	// 	);
-	// });
 
 	return (
 		<Stack
@@ -121,13 +54,13 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 								<chakra.input
 									type="checkbox"
 									mr={'clamp(1.2rem, 2.8vw, 5rem)'}
-									checked={todoItem.isChecked}
+									checked={todoItem.isBought}
 									value={todoItem.product}
 									id={`checkbox${index}`}
 									onChange={() => checkedStateHandler(index)}
 								/>
 								<chakra.label
-									textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
+									textDecoration={todoItem.isBought ? 'line-through' : 'none'}
 									htmlFor={`checkbox${index}`}
 								>
 									{todoItem.product}
@@ -137,7 +70,7 @@ function RenderedList({ children: BalanceComponent }: { children: React.ReactNod
 							<Stack direction={'row'} spacing={'1.2rem'} alignItems={'center'}>
 								<chakra.span
 									fontStyle={'italic'}
-									textDecoration={todoItem.isChecked ? 'line-through' : 'none'}
+									textDecoration={todoItem.isBought ? 'line-through' : 'none'}
 								>
 									${todoItem.price}
 								</chakra.span>

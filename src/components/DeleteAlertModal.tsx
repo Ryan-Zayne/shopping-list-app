@@ -21,7 +21,7 @@ const DeleteAlertModal = (props: DeleteAlertModalProps) => {
 
 	const deleteTodoHandler = () => {
 		dispatch({ type: 'DELETE_TODO_ITEM' });
-		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetIndex: null });
+		dispatch({ type: 'SET_DELETE_TARGET', deleteTargetID: null });
 		onClose();
 	};
 

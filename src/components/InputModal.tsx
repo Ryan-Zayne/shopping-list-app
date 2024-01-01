@@ -16,6 +16,7 @@ type InputModalProps = {
 const InputModal = ({ isOpen, onClose }: InputModalProps) => (
 	<Modal isOpen={isOpen} onClose={onClose} motionPreset={'none'} isCentered={true}>
 		<ModalOverlay />
+
 		<ModalContent maxWidth={'33.8rem'}>
 			<ModalHeader fontWeight={'bold'} fontSize={{ base: '1.5rem', md: '1.47rem' }}>
 				Product name less than three characters!😐
@@ -29,7 +30,7 @@ const InputModal = ({ isOpen, onClose }: InputModalProps) => (
 			</ModalBody>
 
 			<ModalFooter>
-				<Button colorScheme="red" mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
+				<Button colorScheme={'red'} mr={3} onClick={onClose} fontSize={'1.2rem'} py={'1.35rem'}>
 					Close
 				</Button>
 			</ModalFooter>

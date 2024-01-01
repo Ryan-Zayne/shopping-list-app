@@ -4,7 +4,7 @@ import { useTodoListContext } from '../context/stateContextProvider';
 
 function Balance() {
 	const todoList = useTodoListContext();
-	const checkedItems = todoList.filter((todoItem) => todoItem.isChecked);
+	const checkedItems = todoList.filter((todoItem) => todoItem.isBought);
 
 	const handleTotal = () => {
 		const totalCalc = todoList.reduce((accumulator, todoItem) => accumulator + todoItem.price, 0);

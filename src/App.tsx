@@ -25,6 +25,7 @@ function App() {
 				borderRadius={'1.4rem'}
 			>
 				<ToggleButton />
+
 				<Box
 					className="heading"
 					as={'header'}
@@ -38,6 +39,7 @@ function App() {
 					</Heading>
 					<Text color={'hsl(0, 0%, 100%, 0.4)'}>You are now watching Chakra-UI in action </Text>
 				</Box>
+
 				<Flex
 					direction={{ base: 'column', md: 'row' }}
 					gap={{ md: '3rem', lg: '7rem' }}

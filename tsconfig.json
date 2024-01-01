@@ -1,11 +1,10 @@
 {
 	"compilerOptions": {
 		"lib": ["DOM", "DOM.Iterable", "ESNext"],
-		"types": ["vite/client"],
 		"noImplicitAny": true,
 		// "noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"target": "ESNext",
+		"target": "ES2016",
 		"module": "ESNext",
 		"jsx": "preserve",
 		"strict": true,
@@ -22,7 +21,7 @@
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
 
-	"include": ["src", "vite.config.ts", "vite-env.d.ts", "utils/compose.tsx"],
+	"include": ["src", "env.d.ts", "vite.config.ts", "vite-env.d.ts", "utils/compose.tsx"],
 	"exclude": ["node_modules"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

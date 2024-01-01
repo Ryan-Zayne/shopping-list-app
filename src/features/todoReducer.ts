@@ -1,5 +1,5 @@
 import type { ActionObjectType, StateObjectType } from './reducer.types';
-import { syncStateWithStorage } from './syncStateWithStorage';
+import { syncTodoListWithStorage } from './syncTodoWithStorage';
 
 export const defaultState: StateObjectType = {
 	todoInputRefs: {
@@ -7,12 +7,12 @@ export const defaultState: StateObjectType = {
 		priceInputElement: null as unknown as HTMLInputElement,
 	},
 	todoList: [
-		{ id: 0, product: "Veldora's Breath", price: 5000, isChecked: false },
-		{ id: 1, product: "Pyromancer's Robe", price: 1500, isChecked: false },
+		{ id: 0, product: "Veldora's Breath", price: 5000, isBought: false },
+		{ id: 1, product: "Pyromancer's Robe", price: 1500, isBought: false },
 	],
-	isEditing: false,
-	editTargetIndex: null,
-	deleteTargetIndex: null,
+	isEditMode: false,
+	editTargetID: null,
+	deleteTargetID: null,
 };
 
 // Reducer Function
@@ -48,7 +48,7 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 		}
 
 		case 'ADD_TODO_ITEM': {
-			return syncStateWithStorage({
+			return syncTodoListWithStorage({
 				...state,
 				todoList: [
 					...state.todoList,
@@ -56,21 +56,21 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 						id: action.id,
 						product: action.todoProduct,
 						price: Number(action.todoPrice),
-						isChecked: false,
+						isBought: false,
 					},
 				],
 			});
 		}
 
 		case 'UPDATE_TODO_ITEM': {
-			const { todoList, editTargetIndex } = state;
+			const { todoList, editTargetID } = state;
 
-			if (editTargetIndex === null || !todoList[editTargetIndex]) return state;
+			if (editTargetID === null || !todoList[editTargetID]) return state;
 
-			return syncStateWithStorage({
+			return syncTodoListWithStorage({
 				...state,
-				todoList: state.todoList.with(editTargetIndex, {
-					...todoList[editTargetIndex],
+				todoList: state.todoList.with(editTargetID, {
+					...todoList[editTargetID],
 					product: action.todoProduct,
 					price: action.todoPrice,
 				}),
@@ -78,9 +78,9 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 		}
 
 		case 'DELETE_TODO_ITEM': {
-			return syncStateWithStorage({
+			return syncTodoListWithStorage({
 				...state,
-				todoList: state.todoList.filter((_, index) => index !== state.deleteTargetIndex),
+				todoList: state.todoList.filter((_, index) => index !== state.deleteTargetID),
 			});
 		}
 
@@ -88,11 +88,11 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 			const { todoList } = state;
 			const todoItem = todoList[action.todoItemIndex];
 
-			return syncStateWithStorage({
+			return syncTodoListWithStorage({
 				...state,
 				todoList: todoList.with(action.todoItemIndex, {
 					...todoItem,
-					isChecked: !todoItem.isChecked,
+					isBought: !todoItem.isBought,
 				}),
 			});
 		}
@@ -100,21 +100,21 @@ export const todoReducer = (state: StateObjectType, action: ActionObjectType): S
 		case 'SET_EDIT_STATE': {
 			return {
 				...state,
-				isEditing: action.isEditing,
+				isEditMode: action.isEditMode,
 			};
 		}
 
 		case 'SET_EDIT_TARGET': {
 			return {
 				...state,
-				editTargetIndex: action.editTargetIndex,
+				editTargetID: action.editTargetID,
 			};
 		}
 
 		case 'SET_DELETE_TARGET': {
 			return {
 				...state,
-				deleteTargetIndex: action.deleteTargetIndex,
+				deleteTargetID: action.deleteTargetID,
 			};
 		}
 
