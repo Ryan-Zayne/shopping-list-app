@@ -1,20 +1,19 @@
-import { createContext, useReducer } from 'react';
-import type { ActionObjectType, StateObjectType } from '../features/reducer.types';
-import { defaultState, todoReducer } from '../features/todoReducer';
-import { useDefinedContext } from '../hooks/useDefinedContext';
+import { createContext, useReducer } from "react";
+import type { ActionObjectType, StateObjectType } from "../features/reducer.types";
+import { defaultState, todoReducer } from "../features/todoReducer";
+import { useDefinedContext } from "../hooks/useDefinedContext";
+import { parseJSON } from "../utils/parseJSON";
 
 // Contexts
-const TodoListContext = createContext<StateObjectType['todoList'] | null>(null);
-const isEditModeContext = createContext<StateObjectType['isEditMode'] | null>(null);
+const TodoListContext = createContext<StateObjectType["todoList"] | null>(null);
+const isEditModeContext = createContext<StateObjectType["isEditMode"] | null>(null);
 const DispatchStateContext = createContext<React.Dispatch<ActionObjectType> | null>(null);
 
-const initialStoredState = JSON.parse(
-	localStorage.getItem('shopping-list-state') ?? JSON.stringify(defaultState) // fallback to defualt State
-) as StateObjectType;
+const initialStoredState = parseJSON<StateObjectType>(localStorage.getItem("shopping-list-state"));
 
 // Provider
 export function StateContextProvider({ children }: { children: React.ReactNode }) {
-	const [state, dispatch] = useReducer(todoReducer, initialStoredState);
+	const [state, dispatch] = useReducer(todoReducer, initialStoredState ?? defaultState);
 
 	return (
 		<TodoListContext.Provider value={state.todoList}>
